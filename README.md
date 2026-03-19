@@ -54,7 +54,7 @@ If Promptly saves you time, consider supporting its development:
 
 ## 🐳 Deploy with Docker
 
-Docker is the recommended way to run Promptly. No local dependencies needed — just Docker.
+No local dependencies needed — just Docker. All three options are fully supported.
 
 ### Option A: Docker Compose (recommended)
 
@@ -66,11 +66,65 @@ cd promptly
 docker compose up -d
 ```
 
-Open **http://localhost:3001** and you're done.
+Open **http://localhost:9090** and you're done.
 
-### Option B: Docker run (single container)
+<details>
+<summary><strong>compose.yaml</strong></summary>
 
-Runs with a built-in SQLite database — no extra services required.
+```yaml
+services:
+
+  app:
+    build: .
+    container_name: promptly
+    ports:
+      - "9090:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DB_HOST: postgres-db
+      DB_PORT: 5432
+      DB_NAME: promptly
+      DB_USER: promptly
+      DB_PASSWORD: secret
+      DB_TYPE: postgres
+      # Alternatively, use a connection string:
+      # DATABASE_URL: postgresql://promptly:secret@postgres-db:5432/promptly
+    volumes:
+      - promptly_data:/data
+    restart: unless-stopped
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
+  postgres-db:
+    image: postgres:alpine
+    container_name: promptly_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: promptly
+      POSTGRES_USER: promptly
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U promptly -d promptly"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  promptly_data:
+  postgres_data:
+```
+
+</details>
+
+---
+
+### Option B: Docker run — SQLite
+
+Single container with built-in SQLite. No extra services required.
 
 ```bash
 docker run -d \
@@ -81,25 +135,35 @@ docker run -d \
   ghcr.io/yoniergomez/promptly:latest
 ```
 
-### Custom port
+Open **http://localhost:3001**.
+
+---
+
+### Option C: Docker run — External PostgreSQL
+
+Point to your own PostgreSQL instance via a connection string.
 
 ```bash
-# Docker Compose
-PORT=8080 docker compose up -d
-
-# Docker run
-docker run -d --name promptly -p 8080:3001 -v promptly_data:/data ghcr.io/yoniergomez/promptly:latest
+docker run -d \
+  --name promptly \
+  -p 3001:3001 \
+  -v promptly_data:/data \
+  -e DATABASE_URL=postgresql://user:pass@host:5432/promptly \
+  --restart unless-stopped \
+  ghcr.io/yoniergomez/promptly:latest
 ```
+
+---
 
 ### Environment variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PORT` | `3001` | Server port |
+| `PORT` | `3001` | Server port (container-internal) |
 | `NODE_ENV` | `production` | Environment |
-| `DATABASE_URL` | — | PostgreSQL connection string (Compose sets this automatically) |
-| `DB_PATH` | `/data/prompts.db` | SQLite path (used when `DATABASE_URL` is not set) |
-| `FRONTEND_URL` | `http://localhost:3000` | Frontend URL (CORS) |
+| `DATABASE_URL` | — | Full PostgreSQL/MySQL connection string |
+| `DB_HOST` / `DB_PORT` / `DB_NAME` / `DB_USER` / `DB_PASSWORD` / `DB_TYPE` | — | Individual DB vars (alternative to `DATABASE_URL`) |
+| `DB_PATH` | `/data/prompts.db` | SQLite path (used when no DB vars are set) |
 
 ### Useful commands
 
@@ -111,13 +175,16 @@ docker compose logs -f
 docker compose down
 
 # Rebuild after updating the repo
-docker compose up -d --build
+git pull && docker compose up -d --build
 
-# Backup PostgreSQL database
+# Backup PostgreSQL
 docker exec promptly_postgres pg_dump -U promptly promptly > backup-$(date +%Y%m%d).sql
 
-# Backup SQLite database (docker run mode)
+# Backup SQLite (docker run mode)
 docker cp promptly:/data/prompts.db ./backup-$(date +%Y%m%d).db
+
+# Custom port
+PORT=8080 docker compose up -d
 ```
 
 ---

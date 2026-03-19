@@ -602,85 +602,132 @@
 <!-- Docker -->
 <section class="section" id="docker">
   <div class="container">
-    <div class="docker-section">
-      <div class="section-label">Docker</div>
-      <div class="section-title">Deploy in 30 seconds</div>
-      <div class="section-desc">No local dependencies. Just Docker. Pick the option that works for you.</div>
+    <div class="section-label">Docker</div>
+    <div class="section-title">Deploy in 30 seconds</div>
+    <div class="section-desc">No local dependencies. Just Docker. All three options are fully supported — pick the one that fits your setup.</div>
 
-      <!-- Tab switcher -->
-      <div style="display:flex;gap:8px;margin-top:28px;" id="docker-tabs">
-        <button onclick="showTab('compose')" id="tab-compose"
-          style="padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;border:1px solid rgba(0,212,255,0.4);background:rgba(0,212,255,0.12);color:var(--cyan);font-family:var(--font);">
-          Docker Compose
-        </button>
-        <button onclick="showTab('run')" id="tab-run"
-          style="padding:8px 18px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);font-family:var(--font);">
-          Docker Run
-        </button>
+    <!-- Option A: Docker Compose -->
+    <div class="docker-section" style="margin-top:40px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+        <span style="background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);color:var(--cyan);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px;flex-shrink:0;">OPTION A</span>
+        <span style="font-size:16px;font-weight:700;">Docker Compose</span>
+        <span style="font-size:12px;color:rgba(255,255,255,0.35);font-style:italic;">— recommended</span>
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:16px;">Includes PostgreSQL, persistent volumes, and auto-restart. Clone the repo and run one command.</div>
+
+      <div class="code-block">
+        <span class="comment"># Clone the repo</span><br/>
+        <span class="cmd">git clone</span> <span class="arg">https://github.com/YonierGomez/promptly.git</span><br/>
+        <span class="cmd">cd</span> promptly<br/><br/>
+        <span class="comment"># Start all services (app + PostgreSQL)</span><br/>
+        <span class="cmd">docker compose up -d</span><br/><br/>
+        <span class="comment"># Open → http://localhost:9090</span>
       </div>
 
-      <!-- Docker Compose tab -->
-      <div id="panel-compose">
-        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:16px;margin-bottom:4px;">Includes PostgreSQL + persistent volumes + auto-restart</div>
-        <div class="code-block">
-          <span class="comment"># Clone and start</span><br/>
-          <span class="cmd">git clone</span> <span class="arg">https://github.com/YonierGomez/promptly.git</span><br/>
-          <span class="cmd">cd</span> promptly<br/>
-          <span class="cmd">docker compose up -d</span><br/><br/>
-          <span class="comment"># Open in browser</span><br/>
-          <span class="cmd">open</span> <span class="arg">http://localhost:3001</span>
+      <div style="margin-top:20px;">
+        <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">compose.yaml</div>
+        <div class="code-block" style="font-size:12px;line-height:1.75;">
+<span style="color:rgba(255,255,255,0.35);">services:</span><br/>
+<br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;app:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;build: .</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;container_name: promptly</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;ports:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- </span><span class="arg">"9090:3001"</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;environment:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NODE_ENV: production</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_HOST: postgres-db</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_NAME: promptly</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_USER: promptly</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_PASSWORD: secret</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_TYPE: postgres</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;volumes:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- </span><span class="arg">promptly_data:/data</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;restart: unless-stopped</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;depends_on:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;postgres-db: </span><span class="arg">{ condition: service_healthy }</span><br/>
+<br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;postgres-db:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;image: </span><span class="arg">postgres:alpine</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;container_name: promptly_postgres</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;restart: unless-stopped</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;environment:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POSTGRES_DB: </span><span class="arg">promptly</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POSTGRES_USER: </span><span class="arg">promptly</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POSTGRES_PASSWORD: </span><span class="arg">secret</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;volumes:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- </span><span class="arg">postgres_data:/var/lib/postgresql/data</span><br/>
+<br/>
+<span style="color:rgba(255,255,255,0.35);">volumes:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;promptly_data:</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;postgres_data:</span>
         </div>
       </div>
+    </div>
 
-      <!-- Docker Run tab -->
-      <div id="panel-run" style="display:none;">
-        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:16px;margin-bottom:4px;">Single container with built-in SQLite — no extra services needed</div>
-        <div class="code-block">
+    <!-- Option B + C side by side -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:20px;">
+
+      <!-- Option B: Docker Run SQLite -->
+      <div class="docker-section">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+          <span style="background:rgba(48,209,88,0.12);border:1px solid rgba(48,209,88,0.3);color:var(--green);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px;flex-shrink:0;">OPTION B</span>
+          <span style="font-size:15px;font-weight:700;">docker run — SQLite</span>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Single container, zero extra services. Data lives in a named volume.</div>
+        <div class="code-block" style="font-size:12px;">
           <span class="cmd">docker run</span> -d \<br/>
           &nbsp;&nbsp;--name promptly \<br/>
           &nbsp;&nbsp;-p <span class="arg">3001:3001</span> \<br/>
           &nbsp;&nbsp;-v <span class="arg">promptly_data:/data</span> \<br/>
           &nbsp;&nbsp;--restart unless-stopped \<br/>
           &nbsp;&nbsp;<span class="arg">ghcr.io/yoniergomez/promptly:latest</span><br/><br/>
-          <span class="comment"># Open in browser</span><br/>
-          <span class="cmd">open</span> <span class="arg">http://localhost:3001</span>
+          <span class="comment"># Open → http://localhost:3001</span>
         </div>
       </div>
 
-      <!-- Quick reference cards -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:28px;">
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Custom Port</div>
-          <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">PORT=8080 docker compose up -d</div>
+      <!-- Option C: Docker Run PostgreSQL -->
+      <div class="docker-section">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+          <span style="background:rgba(94,92,230,0.12);border:1px solid rgba(94,92,230,0.3);color:#9B8FF5;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px;flex-shrink:0;">OPTION C</span>
+          <span style="font-size:15px;font-weight:700;">docker run — PostgreSQL</span>
         </div>
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">View Logs</div>
-          <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker compose logs -f</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Point to your own PostgreSQL instance via a connection string.</div>
+        <div class="code-block" style="font-size:12px;">
+          <span class="cmd">docker run</span> -d \<br/>
+          &nbsp;&nbsp;--name promptly \<br/>
+          &nbsp;&nbsp;-p <span class="arg">3001:3001</span> \<br/>
+          &nbsp;&nbsp;-v <span class="arg">promptly_data:/data</span> \<br/>
+          &nbsp;&nbsp;-e <span class="arg">DATABASE_URL=postgresql://</span>\<br/>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="arg">user:pass@host:5432/promptly</span> \<br/>
+          &nbsp;&nbsp;--restart unless-stopped \<br/>
+          &nbsp;&nbsp;<span class="arg">ghcr.io/yoniergomez/promptly:latest</span>
         </div>
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Update</div>
-          <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker compose up -d --build</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Backup DB</div>
-          <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker cp promptly:/data/prompts.db ./backup.db</div>
-        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick reference -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:20px;">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Custom Port</div>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">PORT=8080 docker compose up -d</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">View Logs</div>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker compose logs -f</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Update</div>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker compose up -d --build</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Backup DB</div>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker exec promptly_postgres<br/>pg_dump -U promptly promptly > backup.sql</div>
       </div>
     </div>
   </div>
 </section>
-
-<script>
-  function showTab(tab) {
-    const isCompose = tab === 'compose';
-    document.getElementById('panel-compose').style.display = isCompose ? 'block' : 'none';
-    document.getElementById('panel-run').style.display = isCompose ? 'none' : 'block';
-    const active = 'border:1px solid rgba(0,212,255,0.4);background:rgba(0,212,255,0.12);color:var(--cyan);font-weight:600;';
-    const idle = 'border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);font-weight:500;';
-    document.getElementById('tab-compose').style.cssText += isCompose ? active : idle;
-    document.getElementById('tab-run').style.cssText += isCompose ? idle : active;
-  }
-</script>
 
 <!-- Sponsor -->
 <section class="sponsor-section">

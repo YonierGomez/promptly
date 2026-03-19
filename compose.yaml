@@ -57,7 +57,7 @@ services:
 
   # ── PostgreSQL ─────────────────────────────────────────────────
   postgres-db:
-    image: postgres:18-alpine
+    image: postgres:alpine
     container_name: promptly_postgres
     restart: unless-stopped
     environment:
