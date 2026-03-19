@@ -132,7 +132,7 @@ export default function ItemCard({
                   ol: ({ children }) => <ol style={{ paddingLeft: 16, marginBottom: 6 }}>{children}</ol>,
                   li: ({ children }) => <li style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--text-tertiary)', marginBottom: 2 }}>{children}</li>,
                   strong: ({ children }) => <strong style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>{children}</strong>,
-                  blockquote: ({ children }) => <blockquote style={{ borderLeft: '2px solid rgba(0,122,255,0.4)', paddingLeft: 10, color: 'var(--text-quaternary)', fontStyle: 'italic' }}>{children}</blockquote>,
+                  blockquote: ({ children }) => <blockquote style={{ borderLeft: '2px solid rgba(47,128,237,0.4)', paddingLeft: 10, color: 'var(--text-quaternary)', fontStyle: 'italic' }}>{children}</blockquote>,
                 }}
               >
                 {item.content}
@@ -151,8 +151,8 @@ export default function ItemCard({
               title={previewMd ? 'Show raw' : 'Preview markdown'}
               style={{
                 position: 'absolute', top: 6, right: 6,
-                background: previewMd ? 'rgba(0,122,255,0.2)' : 'rgba(255,255,255,0.06)',
-                border: `1px solid ${previewMd ? 'rgba(0,122,255,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                background: previewMd ? 'rgba(47,128,237,0.2)' : 'rgba(255,255,255,0.06)',
+                border: `1px solid ${previewMd ? 'rgba(47,128,237,0.3)' : 'rgba(255,255,255,0.08)'}`,
                 borderRadius: 6, padding: '2px 6px',
                 cursor: 'pointer',
                 display: 'flex', alignItems: 'center', gap: 4,

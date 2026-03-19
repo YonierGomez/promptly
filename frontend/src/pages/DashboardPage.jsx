@@ -81,11 +81,11 @@ function EmptyDashboard({ navigate }) {
     }}>
       <div style={{
         width: 80, height: 80, borderRadius: 20,
-        background: 'linear-gradient(145deg, rgba(0,122,255,0.15), rgba(191,90,242,0.1))',
+        background: 'linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))',
         border: '1px solid rgba(255,255,255,0.08)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        <BarChart2 size={36} color="rgba(0,122,255,0.7)" />
+        <BarChart2 size={36} color="rgba(47,128,237,0.7)" />
       </div>
       <div>
         <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, letterSpacing: -0.3 }}>
@@ -115,7 +115,7 @@ function AnalyticsNudge({ total, navigate }) {
     <div className="glass-card" style={{ padding: 20, display: 'flex', alignItems: 'center', gap: 20 }}>
       <div style={{
         width: 44, height: 44, borderRadius: 12, flexShrink: 0,
-        background: 'rgba(0,122,255,0.1)', border: '1px solid rgba(0,122,255,0.2)',
+        background: 'rgba(47,128,237,0.1)', border: '1px solid rgba(47,128,237,0.2)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         <BarChart2 size={20} color="#007AFF" />
@@ -168,9 +168,9 @@ function ActivityHeatmap({ heatmap }) {
   const getColor = count => {
     if (count === 0) return 'rgba(255,255,255,0.05)'
     const intensity = Math.min(count / maxCount, 1)
-    if (intensity < 0.25) return 'rgba(0,122,255,0.25)'
-    if (intensity < 0.5)  return 'rgba(0,122,255,0.5)'
-    if (intensity < 0.75) return 'rgba(0,122,255,0.75)'
+    if (intensity < 0.25) return 'rgba(47,128,237,0.25)'
+    if (intensity < 0.5)  return 'rgba(47,128,237,0.5)'
+    if (intensity < 0.75) return 'rgba(47,128,237,0.75)'
     return '#007AFF'
   }
 
@@ -217,7 +217,7 @@ function ActivityHeatmap({ heatmap }) {
       {/* Legend */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 10, justifyContent: 'flex-end' }}>
         <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginRight: 4 }}>Less</span>
-        {['rgba(255,255,255,0.05)', 'rgba(0,122,255,0.25)', 'rgba(0,122,255,0.5)', 'rgba(0,122,255,0.75)', '#007AFF'].map((c, i) => (
+        {['rgba(255,255,255,0.05)', 'rgba(47,128,237,0.25)', 'rgba(47,128,237,0.5)', 'rgba(47,128,237,0.75)', '#007AFF'].map((c, i) => (
           <div key={i} style={{ width: 10, height: 10, borderRadius: 2, background: c }} />
         ))}
         <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginLeft: 4 }}>More</span>
@@ -384,7 +384,7 @@ function ChartsSection({ stats }) {
                 <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} animationDuration={0} isAnimationActive={false} />
                 <Bar dataKey="use_count" name="usos" radius={[0, 4, 4, 0]} maxBarSize={18} isAnimationActive={false}>
                   {stats.top_used.map((_, i) => (
-                    <Cell key={i} fill={`rgba(0,122,255,${1 - i * 0.13})`} />
+                    <Cell key={i} fill={`rgba(47,128,237,${1 - i * 0.13})`} />
                   ))}
                 </Bar>
               </BarChart>
@@ -538,7 +538,7 @@ export default function DashboardPage() {
       {/* Welcome */}
       <div style={{ marginBottom: 24 }} className="animate-fade-in-up">
         <div style={{
-          background: 'linear-gradient(135deg, rgba(0,122,255,0.12) 0%, rgba(191,90,242,0.08) 100%)',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)',
           border: '1px solid rgba(255,255,255,0.08)',
           borderRadius: 'var(--radius-2xl)',
           padding: '24px 28px',
@@ -650,7 +650,7 @@ export default function DashboardPage() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                         <MessageSquare size={11} color="#007AFF" />
                         <span style={{ fontSize: 13, fontWeight: 500, flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.title}</span>
-                        <span style={{ fontSize: 10, color: 'rgba(0,122,255,0.5)', background: 'rgba(0,122,255,0.08)', padding: '1px 6px', borderRadius: 4, flexShrink: 0 }}>Prompt</span>
+                        <span style={{ fontSize: 10, color: 'rgba(47,128,237,0.5)', background: 'rgba(47,128,237,0.08)', padding: '1px 6px', borderRadius: 4, flexShrink: 0 }}>Prompt</span>
                       </div>
                       <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginTop: 2, paddingLeft: 17, display: 'flex', gap: 8 }}>
                         {item.category && <span className={`category-badge ${item.category}`}>{item.category}</span>}
@@ -702,7 +702,7 @@ export default function DashboardPage() {
                       <Star size={11} color="var(--yellow)" fill="var(--yellow)" />
                       <MessageSquare size={11} color="#007AFF" />
                       <span style={{ fontSize: 13, fontWeight: 500 }}>{prompt.title}</span>
-                      <span style={{ marginLeft: 'auto', fontSize: 10, color: 'rgba(0,122,255,0.5)', background: 'rgba(0,122,255,0.08)', padding: '1px 6px', borderRadius: 4 }}>Prompt</span>
+                      <span style={{ marginLeft: 'auto', fontSize: 10, color: 'rgba(47,128,237,0.5)', background: 'rgba(47,128,237,0.08)', padding: '1px 6px', borderRadius: 4 }}>Prompt</span>
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginTop: 2, paddingLeft: 22 }}>
                       {prompt.content?.slice(0, 60)}{prompt.content?.length > 60 ? '…' : ''}

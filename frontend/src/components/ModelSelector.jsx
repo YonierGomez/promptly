@@ -146,7 +146,7 @@ export default function ModelSelector({ value, onChange, placeholder = 'Any mode
               onClick={handleAddCustom}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6,
-                background: 'rgba(0,122,255,0.15)', border: '1px solid rgba(0,122,255,0.3)',
+                background: 'rgba(47,128,237,0.15)', border: '1px solid rgba(47,128,237,0.3)',
                 borderRadius: 10, padding: '7px 12px',
                 color: '#409CFF', fontSize: 13, cursor: 'pointer',
                 fontFamily: 'var(--font-mono)',
@@ -173,7 +173,7 @@ export default function ModelSelector({ value, onChange, placeholder = 'Any mode
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                     padding: '8px 16px',
                     cursor: 'pointer',
-                    background: value === m.id ? 'rgba(0,122,255,0.15)' : 'transparent',
+                    background: value === m.id ? 'rgba(47,128,237,0.15)' : 'transparent',
                     transition: 'background 0.1s',
                     gap: 8,
                   }}
@@ -202,7 +202,7 @@ export default function ModelSelector({ value, onChange, placeholder = 'Any mode
               onClick={handleAddCustom}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6,
-                background: 'rgba(0,122,255,0.1)', border: '1px solid rgba(0,122,255,0.2)',
+                background: 'rgba(47,128,237,0.1)', border: '1px solid rgba(47,128,237,0.2)',
                 borderRadius: 8, padding: '5px 10px',
                 color: '#409CFF', fontSize: 12, cursor: 'pointer',
                 fontFamily: 'var(--font-mono)',
@@ -226,12 +226,12 @@ export default function ModelSelector({ value, onChange, placeholder = 'Any mode
         style={{
           display: 'flex', alignItems: 'center', gap: 8,
           background: 'rgba(255,255,255,0.05)',
-          border: `1px solid ${open ? 'rgba(0,122,255,0.5)' : 'rgba(255,255,255,0.09)'}`,
+          border: `1px solid ${open ? 'rgba(47,128,237,0.5)' : 'rgba(255,255,255,0.09)'}`,
           borderRadius: 'var(--radius-md)',
           padding: '10px 14px',
           cursor: 'pointer',
           transition: 'all 0.15s',
-          boxShadow: open ? '0 0 0 3px rgba(0,122,255,0.12)' : 'none',
+          boxShadow: open ? '0 0 0 3px rgba(47,128,237,0.12)' : 'none',
           minHeight: 42,
           userSelect: 'none',
         }}

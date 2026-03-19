@@ -1,53 +1,56 @@
 /* ============================================================
-   PROMPTLY — Liquid Glass Design System
-   Apple-inspired glassmorphism with iOS 18 aesthetics
+   PROMPTLY — Design System
+   Refined Dark · Neutral · Indigo accent
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
 
 /* ── CSS Custom Properties ── */
 :root {
-  /* Core palette */
-  --bg-primary: #000000;
-  --bg-secondary: #0a0a0f;
-  --bg-tertiary: #0f0f1a;
+  /* Core palette — Refined Dark */
+  --bg-primary: #111113;
+  --bg-secondary: #18181C;
+  --bg-tertiary: #202025;
 
-  /* Liquid Glass layers */
-  --glass-bg: rgba(255, 255, 255, 0.04);
-  --glass-bg-hover: rgba(255, 255, 255, 0.07);
-  --glass-bg-active: rgba(255, 255, 255, 0.10);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --glass-border-hover: rgba(255, 255, 255, 0.18);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255,255,255,0.06) inset;
-  --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255,255,255,0.08) inset;
-  --glass-blur: blur(24px) saturate(180%);
-  --glass-blur-heavy: blur(40px) saturate(200%);
+  /* Glass layers */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.055);
+  --glass-bg-active: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-border-hover: rgba(47, 128, 237, 0.30);
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.40), 0 1px 0 rgba(255,255,255,0.04) inset;
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255,255,255,0.05) inset;
+  --glass-blur: blur(20px) saturate(160%);
+  --glass-blur-heavy: blur(36px) saturate(180%);
 
-  /* Specular highlight (the "liquid" part) */
-  --specular: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.06) 100%);
-  --specular-top: linear-gradient(180deg, rgba(255,255,255,0.10) 0%, transparent 60%);
+  /* Specular highlight */
+  --specular: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 60%);
+  --specular-top: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 50%);
 
-  /* Apple system colors */
-  --blue: #007AFF;
-  --blue-light: #409CFF;
-  --purple: #BF5AF2;
-  --pink: #FF375F;
-  --orange: #FF9F0A;
-  --green: #30D158;
-  --teal: #5AC8FA;
-  --indigo: #5E5CE6;
-  --yellow: #FFD60A;
+  /* System colors — for data viz */
+  --blue: #60A5FA;
+  --blue-light: #93C5FD;
+  --cyan: #22D3EE;
+  --purple: #C084FC;
+  --pink: #F472B6;
+  --orange: #FB923C;
+  --green: #4ADE80;
+  --teal: #2DD4BF;
+  --indigo: #818CF8;
+  --yellow: #FACC15;
 
-  /* Text */
-  --text-primary: rgba(255, 255, 255, 0.95);
-  --text-secondary: rgba(255, 255, 255, 0.60);
-  --text-tertiary: rgba(255, 255, 255, 0.35);
-  --text-quaternary: rgba(255, 255, 255, 0.20);
+  /* Text — clean hierarchy */
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(255, 255, 255, 0.52);
+  --text-tertiary: rgba(255, 255, 255, 0.28);
+  --text-quaternary: rgba(255, 255, 255, 0.14);
 
-  /* Accent (default blue) */
-  --accent: var(--blue);
-  --accent-glow: rgba(0, 122, 255, 0.3);
-  --accent-glow-strong: rgba(0, 122, 255, 0.5);
+  /* Accent — Steel Blue */
+  --accent: #2F80ED;
+  --accent-light: #5B9EF5;
+  --accent-dim: #1A5EBD;
+  --accent-glow: rgba(47, 128, 237, 0.22);
+  --accent-glow-strong: rgba(47, 128, 237, 0.44);
 
   /* Semantic */
   --success: var(--green);
@@ -109,12 +112,11 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0, 122, 255, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(191, 90, 242, 0.10) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(94, 92, 230, 0.06) 0%, transparent 70%);
+    radial-gradient(ellipse 70% 50% at 20% 0%,   rgba(40, 40, 40, 0.6) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 100%, rgba(25, 25, 25, 0.5) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
-  animation: bgPulse 12s ease-in-out infinite alternate;
+  animation: bgPulse 18s ease-in-out infinite alternate;
 }
 
 @keyframes bgPulse {
@@ -133,7 +135,7 @@ body::before {
 
 /* ── Selection ── */
 ::selection {
-  background: rgba(0, 122, 255, 0.35);
+  background: rgba(47, 128, 237, 0.38);
   color: white;
 }
 
@@ -231,12 +233,12 @@ body::before {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
+  background: linear-gradient(135deg, var(--accent), var(--accent-dim));
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+  box-shadow: 0 4px 14px rgba(47, 128, 237, 0.35);
   flex-shrink: 0;
 }
 
@@ -290,9 +292,9 @@ body::before {
 }
 
 .nav-item.active {
-  background: rgba(0, 122, 255, 0.15);
-  color: var(--blue-light);
-  border-color: rgba(0, 122, 255, 0.25);
+  background: rgba(47, 128, 237, 0.12);
+  color: var(--accent-light);
+  border-color: rgba(47, 128, 237, 0.20);
   font-weight: 500;
 }
 
@@ -333,8 +335,8 @@ body::before {
 }
 
 .nav-item.active .nav-badge {
-  background: rgba(0, 122, 255, 0.2);
-  color: var(--blue-light);
+  background: rgba(47, 128, 237, 0.18);
+  color: var(--accent-light);
 }
 
 .sidebar-footer {
@@ -413,9 +415,9 @@ body::before {
 }
 
 .search-bar:focus-within {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(0, 122, 255, 0.4);
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(47, 128, 237, 0.40);
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.10);
 }
 
 .search-bar input {
@@ -467,14 +469,14 @@ body::before {
 .btn:active { transform: scale(0.97); }
 
 .btn-primary {
-  background: var(--blue);
+  background: var(--accent);
   color: white;
-  box-shadow: 0 4px 14px rgba(0, 122, 255, 0.35);
+  box-shadow: 0 4px 14px rgba(47, 128, 237, 0.30);
 }
 
 .btn-primary:hover {
-  background: #0A84FF;
-  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.5);
+  background: var(--accent-light);
+  box-shadow: 0 6px 20px rgba(47, 128, 237, 0.46);
   transform: translateY(-1px);
 }
 
@@ -819,9 +821,9 @@ body::before {
 .form-input:focus,
 .form-textarea:focus,
 .form-select:focus {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(0, 122, 255, 0.5);
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(47, 128, 237, 0.45);
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.10);
 }
 
 .form-input::placeholder,

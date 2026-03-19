@@ -82,10 +82,10 @@ export default function DetailModal({ item, onClose, onEdit, onDelete, onToggleF
     strong: ({ children }) => <strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{children}</strong>,
     em: ({ children }) => <em style={{ color: 'var(--text-tertiary)', fontStyle: 'italic' }}>{children}</em>,
     blockquote: ({ children }) => (
-      <blockquote style={{ borderLeft: '3px solid rgba(0,122,255,0.5)', paddingLeft: 14, margin: '10px 0', color: 'var(--text-tertiary)', fontStyle: 'italic' }}>{children}</blockquote>
+      <blockquote style={{ borderLeft: '3px solid rgba(47,128,237,0.5)', paddingLeft: 14, margin: '10px 0', color: 'var(--text-tertiary)', fontStyle: 'italic' }}>{children}</blockquote>
     ),
     hr: () => <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.08)', margin: '16px 0' }} />,
-    a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue)', textDecoration: 'underline', textDecorationColor: 'rgba(0,122,255,0.4)' }}>{children}</a>,
+    a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue)', textDecoration: 'underline', textDecorationColor: 'rgba(47,128,237,0.4)' }}>{children}</a>,
     table: ({ children }) => <div style={{ overflowX: 'auto', marginBottom: 10 }}><table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>{children}</table></div>,
     th: ({ children }) => <th style={{ padding: '6px 10px', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-secondary)', fontWeight: 600 }}>{children}</th>,
     td: ({ children }) => <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'var(--text-tertiary)' }}>{children}</td>,
@@ -115,7 +115,7 @@ export default function DetailModal({ item, onClose, onEdit, onDelete, onToggleF
         transition: 'border-radius 0.2s, box-shadow 0.2s',
       }}>
         {/* Top gradient line */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg, transparent, ${typeColor || 'rgba(0,122,255,0.6)'}, transparent)` }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg, transparent, ${typeColor || 'rgba(47,128,237,0.6)'}, transparent)` }} />
 
         {/* Header */}
         <div style={{
@@ -211,8 +211,8 @@ export default function DetailModal({ item, onClose, onEdit, onDelete, onToggleF
                     <button
                       onClick={() => setRenderMd(p => !p)}
                       style={{
-                        background: renderMd ? 'rgba(0,122,255,0.15)' : 'rgba(255,255,255,0.06)',
-                        border: `1px solid ${renderMd ? 'rgba(0,122,255,0.3)' : 'rgba(255,255,255,0.08)'}`,
+                        background: renderMd ? 'rgba(47,128,237,0.15)' : 'rgba(255,255,255,0.06)',
+                        border: `1px solid ${renderMd ? 'rgba(47,128,237,0.3)' : 'rgba(255,255,255,0.08)'}`,
                         borderRadius: 6, padding: '3px 8px', cursor: 'pointer',
                         fontSize: 11, fontWeight: 500,
                         color: renderMd ? 'var(--blue)' : 'var(--text-tertiary)',

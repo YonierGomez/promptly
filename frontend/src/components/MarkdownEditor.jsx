@@ -70,7 +70,7 @@ export default function MarkdownEditor({
                 fontSize: 11,
                 fontWeight: 500,
                 fontFamily: 'var(--font-sans)',
-                background: mode === id ? 'rgba(0,122,255,0.2)' : 'transparent',
+                background: mode === id ? 'rgba(47,128,237,0.2)' : 'transparent',
                 color: mode === id ? 'var(--blue-light)' : 'var(--text-tertiary)',
                 transition: 'all 0.15s',
               }}
@@ -136,7 +136,7 @@ export default function MarkdownEditor({
                   ul: ({ children }) => <ul style={{ paddingLeft: 20, marginBottom: 10 }}>{children}</ul>,
                   ol: ({ children }) => <ol style={{ paddingLeft: 20, marginBottom: 10 }}>{children}</ol>,
                   li: ({ children }) => <li style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: 4 }}>{children}</li>,
-                  blockquote: ({ children }) => <blockquote style={{ borderLeft: '3px solid rgba(0,122,255,0.5)', paddingLeft: 14, margin: '10px 0', color: 'var(--text-tertiary)', fontStyle: 'italic' }}>{children}</blockquote>,
+                  blockquote: ({ children }) => <blockquote style={{ borderLeft: '3px solid rgba(47,128,237,0.5)', paddingLeft: 14, margin: '10px 0', color: 'var(--text-tertiary)', fontStyle: 'italic' }}>{children}</blockquote>,
                   strong: ({ children }) => <strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{children}</strong>,
                   em: ({ children }) => <em style={{ color: 'var(--text-secondary)' }}>{children}</em>,
                   a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue-light)', textDecoration: 'none' }}>{children}</a>,
