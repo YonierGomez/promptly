@@ -6,7 +6,7 @@
 
 **AI Prompts Manager** — A beautiful, self-hosted web app to manage your AI prompts, skills, steering configurations, MCP server setups, and shell commands.
 
-Built with Apple's **Liquid Glass** design aesthetic (iOS 18 inspired).
+Built with a beautiful glassmorphism design aesthetic.
 
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://hub.docker.com)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
@@ -48,7 +48,7 @@ If Promptly saves you time, consider supporting its development:
 | ☁️ **S3 Backup & Sync** | AWS S3 / Cloudflare R2 / Backblaze B2 / MinIO — backup, restore, and auto-sync scheduling |
 | 📱 **Responsive** | Full mobile support — works on any screen size |
 | 🐳 **Docker Ready** | Single container with PostgreSQL, multi-stage build |
-| 🎨 **Liquid Glass UI** | Apple iOS 18-inspired glassmorphism with spring animations |
+| 🎨 **Glassmorphism UI** | Blur, transparency and gradients with spring animations |
 
 ---
 
