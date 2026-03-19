@@ -7,10 +7,10 @@
 
 /* ── CSS Custom Properties ── */
 :root {
-  /* Core palette — true black */
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #0f0f12;
-  --bg-tertiary: #141418;
+  /* Core palette */
+  --bg-primary: #161618;
+  --bg-secondary: #1b1b1f;
+  --bg-tertiary: #202025;
 
   /* Liquid Glass layers */
   --glass-bg: rgba(255, 255, 255, 0.04);
