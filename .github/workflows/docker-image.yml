@@ -7,6 +7,8 @@
 name: Docker Image CI (multi-arch)
 
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: '0 8 * * 1'  # Cada lunes a las 8:00 UTC
   workflow_dispatch:
