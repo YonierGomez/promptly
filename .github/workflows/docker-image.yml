@@ -1,5 +1,5 @@
 # CI/CD Docker Multi-Arch para Promptly
-# - Build multi-arquitectura (amd64, arm64, armv7) con QEMU + Buildx
+# - Build multi-arquitectura (amd64, arm64) con QEMU + Buildx (armv7 no soportado por node:alpine)
 # - Detecta versión desde package.json
 # - Genera releases con changelog desde commits
 # - Requiere secrets: USER_HUB, PASS_HUB (Docker Hub)
@@ -75,7 +75,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ secrets.USER_HUB }}/promptly:latest
@@ -129,7 +129,6 @@ jobs:
           |---|---|---|
           | x86-64 | PCs, servidores | \`docker pull --platform linux/amd64 ${IMAGE}\` |
           | ARM64 | Raspberry Pi 3/4/5, Apple Silicon | \`docker pull --platform linux/arm64 ${IMAGE}\` |
-          | ARMv7 | Raspberry Pi 2, IoT | \`docker pull --platform linux/arm/v7 ${IMAGE}\` |
 
           ### Uso rápido
 

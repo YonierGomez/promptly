@@ -133,7 +133,7 @@ docker run -d \
   -p 3001:3001 \
   -v promptly_data:/data \
   --restart unless-stopped \
-  ghcr.io/yoniergomez/promptly:latest
+  yoniergomez/promptly:latest
 ```
 
 Open **http://localhost:3001**.
@@ -151,7 +151,7 @@ docker run -d \
   -v promptly_data:/data \
   -e DATABASE_URL=postgresql://user:pass@host:5432/promptly \
   --restart unless-stopped \
-  ghcr.io/yoniergomez/promptly:latest
+  yoniergomez/promptly:latest
 ```
 
 ---
