@@ -8,7 +8,7 @@
 
 Built with a true-black glassmorphism design and multi-provider AI support.
 
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://hub.docker.com)
+[![Docker](https://img.shields.io/badge/Docker-yoniergomez%2Fpromptly-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/yoniergomez/promptly)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://postgresql.org)
@@ -55,15 +55,17 @@ If Promptly saves you time, consider supporting its development:
 
 ## 🐳 Deploy with Docker
 
-No local dependencies needed — just Docker. All three options are fully supported.
+No local dependencies needed — just Docker. The official image is published on Docker Hub as **`yoniergomez/promptly`** and supports `amd64`, `arm64`, and `armv7`.
 
 ### Option A: Docker Compose (recommended)
 
-Includes PostgreSQL, persistent volumes, and automatic restarts.
+No clone required. Includes PostgreSQL, persistent volumes, and automatic restarts.
 
 ```bash
-git clone https://github.com/YonierGomez/promptly.git
-cd promptly
+# Download the compose file
+curl -O https://raw.githubusercontent.com/YonierGomez/promptly/main/compose.yaml
+
+# Start (pulls the image automatically from Docker Hub)
 docker compose up -d
 ```
 
@@ -76,7 +78,7 @@ Open **http://localhost:9090** and you're done.
 services:
 
   app:
-    build: .
+    image: yoniergomez/promptly:latest
     container_name: promptly
     ports:
       - "9090:3001"
@@ -175,8 +177,13 @@ docker compose logs -f
 # Stop
 docker compose down
 
-# Rebuild after updating the repo
-git pull && docker compose up -d --build
+# Update to the latest image
+docker compose pull && docker compose up -d
+
+# Build from source instead of using the official image
+git clone https://github.com/YonierGomez/promptly.git && cd promptly
+# Edit compose.yaml: replace `image:` with `build: .`, then:
+docker compose up -d --build
 
 # Backup PostgreSQL
 docker exec promptly_postgres pg_dump -U promptly promptly > backup-$(date +%Y%m%d).sql
@@ -204,25 +211,7 @@ npm run dev           # start backend + frontend in watch mode
 
 ---
 
-## 🔄 CI/CD (GitHub Actions)
-
-El workflow `.github/workflows/docker-image.yml` hace build multi-arquitectura (amd64, arm64, armv7) y publica en Docker Hub cuando la versión en `package.json` cambia.
-
-**Requisitos:**
-
-1. **Secrets** en el repo (Settings → Secrets and variables → Actions):
-   - `USER_HUB`: usuario de Docker Hub
-   - `PASS_HUB`: token o contraseña de Docker Hub
-
-2. **Permisos**: Settings → Actions → General → Workflow permissions → "Read and write permissions"
-
-3. **Branch protection** en `main`: cambios vía Pull Request; el workflow corre desde `main` (schedule semanal o manual `workflow_dispatch`)
-
-La imagen se publica como `{USER_HUB}/promptly:latest` y `{USER_HUB}/promptly:{version}`.
-
----
-
-## 📁 Project Structure
+##  Project Structure
 
 ```
 promptly/

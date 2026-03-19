@@ -13,9 +13,11 @@ services:
 
   # ── Aplicación principal ────────────────────────────────────────
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: yoniergomez/promptly:latest
+    # Para construir desde el código fuente en lugar de usar la imagen oficial:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: promptly
     ports:
       - "9090:3001"
@@ -37,7 +39,7 @@ services:
       DB_PASSWORD: secret
       DB_TYPE: postgres
 
-      # ── SQLite (por defecto — sin DATABASE_URL ni DB_HOST) ──────
+      # ── SQLite (por defecto — sin DB_HOST ni DATABASE_URL) ──────
       # DB_PATH: /data/prompts.db
 
     volumes:

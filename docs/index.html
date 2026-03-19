@@ -677,15 +677,15 @@
 
         <div class="deploy-step">
           <div class="deploy-step-number" style="background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,122,255,0.1));border:1px solid rgba(0,212,255,0.3);color:var(--cyan);">1</div>
-          <div class="deploy-step-title">Clone</div>
-          <div class="deploy-step-desc">Pull the repo to your server or local machine</div>
-          <div style="margin-top:12px;background:rgba(0,0,0,0.4);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11.5px;color:var(--cyan);">git clone github.com/<br/>YonierGomez/promptly</div>
+          <div class="deploy-step-title">Get the file</div>
+          <div class="deploy-step-desc">Download the compose file — no clone needed</div>
+          <div style="margin-top:12px;background:rgba(0,0,0,0.4);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11.5px;color:var(--cyan);">curl -O raw.githubusercontent<br/>.com/…/compose.yaml</div>
         </div>
 
         <div class="deploy-step">
           <div class="deploy-step-number" style="background:linear-gradient(135deg,rgba(48,209,88,0.2),rgba(0,212,255,0.1));border:1px solid rgba(48,209,88,0.3);color:var(--green);">2</div>
           <div class="deploy-step-title">Start</div>
-          <div class="deploy-step-desc">One command brings up the app + PostgreSQL</div>
+          <div class="deploy-step-desc">Pulls the official image and starts app + PostgreSQL</div>
           <div style="margin-top:12px;background:rgba(0,0,0,0.4);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11.5px;color:var(--green);">docker compose up -d</div>
         </div>
 
@@ -707,15 +707,14 @@
           <div class="terminal-title">zsh — promptly</div>
         </div>
         <div class="terminal-body">
-          <div class="t-line"><span class="t-prompt">~</span><span class="t-prompt">$</span><span class="t-cmd">git clone</span><span class="t-arg">https://github.com/YonierGomez/promptly.git</span></div>
-          <div class="t-line" style="color:rgba(255,255,255,0.3);">Cloning into 'promptly'...</div>
-          <div class="t-line" style="color:rgba(255,255,255,0.3);">remote: Enumerating objects: 312, done.</div>
-          <div class="t-line"><span class="t-prompt">~</span><span class="t-prompt">$</span><span class="t-cmd">cd</span><span>promptly</span></div>
-          <div class="t-line"><span class="t-prompt">promptly</span><span class="t-prompt">$</span><span class="t-cmd">docker compose up -d</span></div>
-          <div class="t-line" style="color:rgba(255,255,255,0.3);"> ✔ Network promptly_default    Created</div>
+          <div class="t-line"><span class="t-prompt">~</span><span class="t-prompt">$</span><span class="t-cmd">curl</span><span class="t-arg">-O https://raw.githubusercontent.com/YonierGomez/promptly/main/compose.yaml</span></div>
+          <div class="t-line" style="color:rgba(255,255,255,0.3);">  % Total    % Received ... 100  2748</div>
+          <div class="t-line"><span class="t-prompt">~</span><span class="t-prompt">$</span><span class="t-cmd">docker compose up -d</span></div>
+          <div class="t-line" style="color:rgba(255,255,255,0.3);"> ✔ yoniergomez/promptly:latest  Pulled</div>
+          <div class="t-line" style="color:rgba(255,255,255,0.3);"> ✔ Network promptly_default     Created</div>
           <div class="t-line" style="color:rgba(255,255,255,0.3);"> ✔ Container promptly_postgres  Started</div>
           <div class="t-line" style="color:rgba(255,255,255,0.3);"> ✔ Container promptly           Started</div>
-          <div class="t-line"><span class="t-prompt">promptly</span><span class="t-prompt">$</span><span class="t-cmd">open</span><span class="t-url">http://localhost:9090</span></div>
+          <div class="t-line"><span class="t-prompt">~</span><span class="t-prompt">$</span><span class="t-cmd">open</span><span class="t-url">http://localhost:9090</span></div>
           <div class="t-line"><span class="t-success">✦ Promptly is running</span></div>
         </div>
       </div>
@@ -741,19 +740,21 @@
 
       <!-- Panel A -->
       <div id="tab-a" class="deploy-tab-panel active" role="tabpanel">
-        <p class="deploy-tab-desc">App + PostgreSQL + persistent volumes + auto-restart. <strong style="color:rgba(255,255,255,0.7)">Recommended</strong> for most deployments.</p>
+        <p class="deploy-tab-desc">Official image from Docker Hub + PostgreSQL + persistent volumes + auto-restart. <strong style="color:rgba(255,255,255,0.7)">Recommended</strong> — no clone required.</p>
         <div class="deploy-tab-heading">Commands</div>
         <div class="code-block" style="font-size:12.5px;">
-          <span class="cmd">git clone</span> <span class="arg">https://github.com/YonierGomez/promptly.git</span><br/>
-          <span class="cmd">cd</span> promptly<br/>
+          <span class="comment"># Download compose file (no clone needed)</span><br/>
+          <span class="cmd">curl</span> -O <span class="arg">https://raw.githubusercontent.com/YonierGomez/promptly/main/compose.yaml</span><br/>
           <span class="cmd">docker compose up -d</span><br/><br/>
-          <span class="comment"># Open → http://localhost:9090</span>
+          <span class="comment"># Open → http://localhost:9090</span><br/><br/>
+          <span class="comment"># Update to the latest image at any time:</span><br/>
+          <span class="cmd">docker compose pull</span> &amp;&amp; <span class="cmd">docker compose up -d</span>
         </div>
         <div class="deploy-tab-heading">compose.yaml</div>
         <div class="code-block" style="font-size:12px;line-height:1.8;">
 <span style="color:rgba(255,255,255,0.35);">services:</span><br/>
 <span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;app:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;build: .</span><br/>
+<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;image: </span><span class="arg">yoniergomez/promptly:latest</span><br/>
 <span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;ports: [</span><span class="arg">"9090:3001"</span><span style="color:rgba(255,255,255,0.35);">]</span><br/>
 <span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;environment:</span><br/>
 <span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_HOST: </span><span class="arg">postgres-db</span><br/>
@@ -809,8 +810,8 @@
         <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker compose logs -f</div>
       </div>
       <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;transition:all 0.2s var(--spring);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
-        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Update</div>
-        <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker compose up -d --build</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Update image</div>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker compose pull &amp;&amp; docker compose up -d</div>
       </div>
       <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;transition:all 0.2s var(--spring);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
         <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Backup DB</div>
