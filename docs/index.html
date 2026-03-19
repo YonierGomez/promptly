@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Promptly — AI Prompts Manager</title>
-  <meta name="description" content="A beautiful, self-hosted web app to manage your AI prompts, skills, steering configurations, MCP server setups, and shell commands. Built with Apple's Liquid Glass design." />
+  <meta name="description" content="A beautiful, self-hosted web app to manage your AI prompts, skills, steering configurations, MCP server setups, and shell commands." />
   <meta property="og:title" content="Promptly — AI Prompts Manager" />
-  <meta property="og:description" content="Self-hosted AI library manager with Liquid Glass design. Prompts, Skills, Steering, MCP Configs, Commands — all in one place." />
+  <meta property="og:description" content="Self-hosted AI library manager. Prompts, Skills, Steering, MCP Configs, Commands — all in one place." />
   <meta property="og:type" content="website" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000'/%3E%3Crect x='3' y='3' width='26' height='26' rx='5' stroke='%2300D4FF' stroke-width='1.5' stroke-opacity='0.8' fill='none'/%3E%3Crect x='8' y='8' width='6' height='6' rx='1.5' fill='%2300D4FF' fill-opacity='0.9'/%3E%3Crect x='18' y='8' width='6' height='6' rx='1.5' fill='%2300D4FF' fill-opacity='0.5'/%3E%3Crect x='8' y='18' width='6' height='6' rx='1.5' fill='%2300D4FF' fill-opacity='0.5'/%3E%3Cpath d='M21 18.5L19.5 22L22.5 21L21 24' stroke='%2300D4FF' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' stroke-opacity='0.9'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
@@ -23,6 +24,8 @@
       --teal: #5AC8FA;
       --font: 'Geist', -apple-system, system-ui, sans-serif;
       --mono: 'Geist Mono', monospace;
+      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     html { scroll-behavior: smooth; }
@@ -49,23 +52,64 @@
       animation: bgPulse 12s ease-in-out infinite alternate;
     }
 
-    @keyframes bgPulse {
-      0% { opacity: 0.7; }
-      100% { opacity: 1; }
-    }
+    @keyframes bgPulse { 0% { opacity: 0.7; } 100% { opacity: 1; } }
 
     .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    /* ── Scroll animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-blur {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(16px) scale(0.98);
+      transition: opacity 0.8s var(--ease-out), filter 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+    .reveal-blur.visible { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    }
+    .stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0s; }
+    .stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: 0.08s; }
+    .stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 0.16s; }
+    .stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 0.24s; }
+    .stagger.visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: 0.32s; }
+    .stagger.visible > *:nth-child(6) { opacity:1; transform:none; transition-delay: 0.40s; }
+    .stagger.visible > *:nth-child(7) { opacity:1; transform:none; transition-delay: 0.48s; }
+    .stagger.visible > *:nth-child(8) { opacity:1; transform:none; transition-delay: 0.56s; }
+    .stagger.visible > *:nth-child(9) { opacity:1; transform:none; transition-delay: 0.64s; }
+    .stagger.visible > *:nth-child(10){ opacity:1; transform:none; transition-delay: 0.72s; }
+    .stagger.visible > *:nth-child(11){ opacity:1; transform:none; transition-delay: 0.80s; }
+    .stagger.visible > *:nth-child(12){ opacity:1; transform:none; transition-delay: 0.88s; }
+
+    .scale-in {
+      opacity: 0;
+      transform: scale(0.94);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+    .scale-in.visible { opacity: 1; transform: scale(1); }
 
     /* ── Nav ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: rgba(0,0,0,0.5);
       backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
       border-bottom: 1px solid rgba(255,255,255,0.07);
       padding: 0 24px;
       height: 56px;
       display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.3s;
     }
+    nav.scrolled { background: rgba(0,0,0,0.8); }
 
     .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .nav-logo-icon {
@@ -86,31 +130,16 @@
     .btn {
       display: inline-flex; align-items: center; gap: 7px;
       padding: 8px 18px; border-radius: 10px; font-size: 14px; font-weight: 500;
-      text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
+      text-decoration: none; transition: all 0.2s var(--spring); cursor: pointer; border: none;
       font-family: var(--font);
     }
-    .btn-primary {
-      background: var(--blue); color: white;
-      box-shadow: 0 4px 14px rgba(0,122,255,0.4);
-    }
-    .btn-primary:hover { background: #0A84FF; box-shadow: 0 6px 20px rgba(0,122,255,0.55); transform: translateY(-1px); }
-    .btn-glass {
-      background: rgba(255,255,255,0.07); color: white;
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(20px);
-    }
-    .btn-glass:hover { background: rgba(255,255,255,0.12); }
+    .btn-primary { background: var(--blue); color: white; box-shadow: 0 4px 14px rgba(0,122,255,0.4); }
+    .btn-primary:hover { background: #0A84FF; box-shadow: 0 6px 20px rgba(0,122,255,0.55); transform: translateY(-2px) scale(1.02); }
+    .btn-glass { background: rgba(255,255,255,0.07); color: white; border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(20px); }
+    .btn-glass:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
 
     /* ── Hero ── */
     .hero { padding: 140px 0 80px; text-align: center; }
-
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.25);
-      color: var(--cyan); border-radius: 20px; padding: 4px 14px;
-      font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
-      margin-bottom: 24px;
-    }
 
     .hero h1 {
       font-size: clamp(40px, 7vw, 72px);
@@ -122,6 +151,12 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      animation: heroIn 0.9s var(--ease-out) both;
+    }
+
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(30px); filter: blur(6px); }
+      to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
     }
 
     .hero h1 span {
@@ -137,14 +172,19 @@
       max-width: 620px;
       margin: 0 auto 36px;
       line-height: 1.6;
+      animation: heroIn 0.9s 0.15s var(--ease-out) both;
     }
 
-    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+    .hero-actions {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px;
+      animation: heroIn 0.9s 0.25s var(--ease-out) both;
+    }
 
     .hero-stats {
       display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
       padding: 24px 0;
       border-top: 1px solid rgba(255,255,255,0.07);
+      animation: heroIn 0.9s 0.4s var(--ease-out) both;
     }
 
     .stat { text-align: center; }
@@ -153,10 +193,8 @@
 
     /* ── App Preview ── */
     .preview {
-      margin: 0 auto 100px;
-      max-width: 900px;
-      border-radius: 20px;
-      overflow: hidden;
+      margin: 0 auto 100px; max-width: 900px;
+      border-radius: 20px; overflow: hidden;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset;
       background: rgba(10,10,20,0.8);
@@ -175,146 +213,133 @@
     .dot-yellow { background: #FFBD2E; }
     .dot-green { background: #28C840; }
 
-    .preview-url {
-      flex: 1; text-align: center; font-size: 12px; color: rgba(255,255,255,0.3);
-      font-family: var(--mono);
-    }
+    .preview-url { flex: 1; text-align: center; font-size: 12px; color: rgba(255,255,255,0.3); font-family: var(--mono); }
 
-    .preview-content {
-      display: grid; grid-template-columns: 200px 1fr;
-      min-height: 420px;
-    }
+    .preview-content { display: grid; grid-template-columns: 200px 1fr; min-height: 420px; }
 
-    .preview-sidebar {
-      background: rgba(0,0,0,0.4);
-      border-right: 1px solid rgba(255,255,255,0.06);
-      padding: 16px 12px;
-    }
-
-    .preview-logo {
-      display: flex; align-items: center; gap: 8px;
-      padding: 8px; margin-bottom: 16px;
-    }
-
-    .preview-logo-icon {
-      width: 24px; height: 24px; border-radius: 6px;
-      background: linear-gradient(145deg, #0D1117, #161B22);
-      border: 1px solid rgba(255,255,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-    }
-
+    .preview-sidebar { background: rgba(0,0,0,0.4); border-right: 1px solid rgba(255,255,255,0.06); padding: 16px 12px; }
+    .preview-logo { display: flex; align-items: center; gap: 8px; padding: 8px; margin-bottom: 16px; }
+    .preview-logo-icon { width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(145deg, #0D1117, #161B22); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; }
     .preview-logo-text { font-size: 13px; font-weight: 600; }
-
-    .preview-nav-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 7px 10px; border-radius: 8px; margin-bottom: 2px;
-      font-size: 12px; color: rgba(255,255,255,0.5);
-    }
-
-    .preview-nav-item.active {
-      background: rgba(0,122,255,0.15);
-      color: #409CFF;
-      border: 1px solid rgba(0,122,255,0.2);
-    }
-
+    .preview-nav-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; margin-bottom: 2px; font-size: 12px; color: rgba(255,255,255,0.5); }
+    .preview-nav-item.active { background: rgba(0,122,255,0.15); color: #409CFF; border: 1px solid rgba(0,122,255,0.2); }
     .preview-nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-
     .preview-main { padding: 20px; }
-
     .preview-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-    .preview-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px; padding: 14px;
-    }
-
+    .preview-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px; transition: transform 0.2s var(--spring), background 0.2s; }
+    .preview-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-2px); }
     .preview-card-title { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
-    .preview-card-text {
-      font-size: 10px; color: rgba(255,255,255,0.3);
-      font-family: var(--mono); line-height: 1.5;
-    }
+    .preview-card-text { font-size: 10px; color: rgba(255,255,255,0.3); font-family: var(--mono); line-height: 1.5; }
+    .preview-card-badge { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 10px; margin-top: 8px; font-weight: 500; }
 
-    .preview-card-badge {
-      display: inline-block; font-size: 9px; padding: 1px 6px;
-      border-radius: 10px; margin-top: 8px; font-weight: 500;
-    }
-
-    /* ── Features ── */
+    /* ── Sections ── */
     .section { padding: 80px 0; }
-    .section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
-    }
-    .section-title {
-      font-size: clamp(28px, 4vw, 42px); font-weight: 700;
-      letter-spacing: -1px; margin-bottom: 16px;
-    }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
+    .section-title { font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -1px; margin-bottom: 16px; }
     .section-desc { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 540px; line-height: 1.6; }
 
-    .features-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px; margin-top: 48px;
-    }
+    /* ── Features ── */
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 48px; }
 
     .feature-card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 20px; padding: 24px;
-      transition: all 0.2s;
+      transition: all 0.3s var(--spring);
       position: relative; overflow: hidden;
     }
-
-    .feature-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
-    }
-
-    .feature-card:hover {
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(255,255,255,0.14);
-      transform: translateY(-2px);
-    }
-
-    .feature-icon {
-      width: 40px; height: 40px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; margin-bottom: 14px;
-    }
-
+    .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); }
+    .feature-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.14); transform: translateY(-4px) scale(1.01); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    .feature-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px; }
     .feature-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
     .feature-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
 
-    /* ── Highlights strip ── */
-    .highlights {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px; margin: 60px 0;
-    }
-
-    .highlight-item {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 16px; padding: 20px;
-      display: flex; align-items: flex-start; gap: 14px;
-    }
-
-    .highlight-icon {
-      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; font-size: 17px;
-    }
-
+    /* ── Highlights ── */
+    .highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 60px 0; }
+    .highlight-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 20px; display: flex; align-items: flex-start; gap: 14px; transition: all 0.25s var(--spring); }
+    .highlight-item:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+    .highlight-icon { width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 17px; }
     .highlight-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
     .highlight-desc { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
 
-    /* ── Docker section ── */
-    .docker-section {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px; padding: 48px;
-      margin: 80px 0;
+    /* ── Docker ── */
+    .docker-section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 48px; margin: 80px 0; transition: border-color 0.2s; }
+    .docker-section:hover { border-color: rgba(255,255,255,0.14); }
+
+    /* ── Deploy steps ── */
+    .deploy-hero {
+      background: linear-gradient(135deg, rgba(0,122,255,0.08) 0%, rgba(0,212,255,0.05) 50%, rgba(191,90,242,0.06) 100%);
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 32px;
+      padding: 60px 48px;
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .deploy-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(0,212,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
     }
 
+    .deploy-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 40px; }
+
+    .deploy-step {
+      text-align: center;
+      padding: 28px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      transition: all 0.3s var(--spring);
+      position: relative;
+    }
+    .deploy-step:hover { background: rgba(255,255,255,0.06); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+
+    .deploy-step-number {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800;
+      margin: 0 auto 16px;
+      position: relative;
+    }
+
+    .deploy-step-connector {
+      position: absolute;
+      top: 50%; right: -17px;
+      width: 34px; height: 1px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+      display: none;
+    }
+
+    .deploy-step-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .deploy-step-desc { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+    .deploy-terminal {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .terminal-bar {
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .terminal-title { flex: 1; text-align: center; font-size: 11px; color: rgba(255,255,255,0.3); font-family: var(--mono); }
+    .terminal-body { padding: 24px 28px; font-family: var(--mono); font-size: 13px; line-height: 1.9; }
+    .t-comment { color: rgba(255,255,255,0.28); }
+    .t-prompt { color: rgba(255,255,255,0.3); user-select: none; }
+    .t-cmd { color: var(--cyan); }
+    .t-arg { color: var(--green); }
+    .t-url { color: #FF9F0A; }
+    .t-success { color: #30D158; }
+    .t-line { display: flex; gap: 8px; align-items: baseline; }
+
+    /* ── Code block ── */
     .code-block {
       background: rgba(0,0,0,0.5);
       border: 1px solid rgba(255,255,255,0.08);
@@ -323,54 +348,38 @@
       color: rgba(255,255,255,0.7); line-height: 1.8;
       margin-top: 20px; overflow-x: auto;
     }
-
     .code-block .comment { color: rgba(255,255,255,0.3); }
     .code-block .cmd { color: var(--cyan); }
     .code-block .arg { color: var(--green); }
 
-    /* ── Sponsor ── */
-    .sponsor-section {
-      text-align: center; padding: 80px 0;
-      border-top: 1px solid rgba(255,255,255,0.07);
+    /* ── Option cards ── */
+    .option-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; padding: 3px 10px;
+      border-radius: 20px; letter-spacing: 0.5px;
+      flex-shrink: 0;
     }
 
+    /* ── Sponsor ── */
+    .sponsor-section { text-align: center; padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.07); }
     .sponsor-title { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
     .sponsor-desc { font-size: 16px; color: rgba(255,255,255,0.5); margin-bottom: 32px; }
-
     .sponsor-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-
-    .sponsor-btn {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 14px 28px; border-radius: 14px; font-size: 15px; font-weight: 600;
-      text-decoration: none; transition: all 0.2s;
-    }
-
-    .sponsor-github {
-      background: linear-gradient(135deg, #ea4aaa, #c026d3);
-      color: white;
-      box-shadow: 0 8px 24px rgba(234,74,170,0.35);
-    }
-    .sponsor-github:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(234,74,170,0.5); }
-
-    .sponsor-coffee {
-      background: linear-gradient(135deg, #FFDD00, #FF9900);
-      color: #000;
-      box-shadow: 0 8px 24px rgba(255,221,0,0.3);
-    }
-    .sponsor-coffee:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,221,0,0.45); }
+    .sponsor-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border-radius: 14px; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.25s var(--spring); }
+    .sponsor-github { background: linear-gradient(135deg, #ea4aaa, #c026d3); color: white; box-shadow: 0 8px 24px rgba(234,74,170,0.35); }
+    .sponsor-github:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 36px rgba(234,74,170,0.5); }
+    .sponsor-coffee { background: linear-gradient(135deg, #FFDD00, #FF9900); color: #000; box-shadow: 0 8px 24px rgba(255,221,0,0.3); }
+    .sponsor-coffee:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 36px rgba(255,221,0,0.45); }
 
     /* ── Footer ── */
-    footer {
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding: 32px 0;
-      text-align: center;
-      color: rgba(255,255,255,0.3);
-      font-size: 13px;
-    }
-
-    footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    footer { border-top: 1px solid rgba(255,255,255,0.07); padding: 32px 0; text-align: center; color: rgba(255,255,255,0.3); font-size: 13px; }
+    footer a { color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.15s; }
     footer a:hover { color: white; }
 
+    @media (max-width: 900px) {
+      .deploy-steps { grid-template-columns: 1fr; gap: 16px; }
+      .deploy-hero { padding: 36px 24px; }
+    }
     @media (max-width: 768px) {
       .preview-content { grid-template-columns: 1fr; }
       .preview-sidebar { display: none; }
@@ -384,7 +393,7 @@
 <body>
 
 <!-- Nav -->
-<nav>
+<nav id="nav">
   <a href="#" class="nav-logo">
     <div class="nav-logo-icon">
       <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
@@ -399,9 +408,10 @@
   </a>
   <div class="nav-links">
     <a href="#features" class="nav-link">Features</a>
+    <a href="#backup" class="nav-link">Backup</a>
     <a href="#docker" class="nav-link">Docker</a>
     <a href="https://github.com/YonierGomez/promptly" class="nav-link" target="_blank">GitHub</a>
-    <a href="https://github.com/YonierGomez/promptly/releases" class="btn btn-primary" target="_blank">Download</a>
+    <a href="#docker" class="btn btn-primary">Deploy</a>
   </div>
 </nav>
 
@@ -420,7 +430,6 @@
         View on GitHub
       </a>
     </div>
-
     <div class="hero-stats">
       <div class="stat"><div class="stat-value">70+</div><div class="stat-label">AI Models</div></div>
       <div class="stat"><div class="stat-value">5</div><div class="stat-label">Sections</div></div>
@@ -432,12 +441,12 @@
 
 <!-- App Preview -->
 <div class="container">
-  <div class="preview">
+  <div class="preview scale-in">
     <div class="preview-bar">
       <div class="dot dot-red"></div>
       <div class="dot dot-yellow"></div>
       <div class="dot dot-green"></div>
-      <div class="preview-url">localhost:3001/prompts</div>
+      <div class="preview-url">localhost:9090/prompts</div>
     </div>
     <div class="preview-content">
       <div class="preview-sidebar">
@@ -469,26 +478,10 @@
           <div style="background:#007AFF;color:white;border-radius:8px;padding:7px 14px;font-size:11px;font-weight:600;">+ New</div>
         </div>
         <div class="preview-cards">
-          <div class="preview-card">
-            <div class="preview-card-title">Code Review Assistant</div>
-            <div class="preview-card-text">Review this code for bugs, performance issues, and best practices...</div>
-            <div class="preview-card-badge" style="background:rgba(0,122,255,0.15);color:#409CFF;">coding</div>
-          </div>
-          <div class="preview-card">
-            <div class="preview-card-title">Spanish Translator</div>
-            <div class="preview-card-text">Translate the following text to Spanish maintaining the original tone...</div>
-            <div class="preview-card-badge" style="background:rgba(191,90,242,0.15);color:#BF5AF2;">writing</div>
-          </div>
-          <div class="preview-card">
-            <div class="preview-card-title">SQL Query Builder</div>
-            <div class="preview-card-text">Generate an optimized SQL query for the following requirements...</div>
-            <div class="preview-card-badge" style="background:rgba(90,200,250,0.15);color:#5AC8FA;">analysis</div>
-          </div>
-          <div class="preview-card">
-            <div class="preview-card-title">Unit Test Generator</div>
-            <div class="preview-card-text">Write comprehensive unit tests for the following function...</div>
-            <div class="preview-card-badge" style="background:rgba(48,209,88,0.15);color:#30D158;">testing</div>
-          </div>
+          <div class="preview-card"><div class="preview-card-title">Code Review Assistant</div><div class="preview-card-text">Review this code for bugs, performance issues, and best practices...</div><div class="preview-card-badge" style="background:rgba(0,122,255,0.15);color:#409CFF;">coding</div></div>
+          <div class="preview-card"><div class="preview-card-title">Spanish Translator</div><div class="preview-card-text">Translate the following text to Spanish maintaining the original tone...</div><div class="preview-card-badge" style="background:rgba(191,90,242,0.15);color:#BF5AF2;">writing</div></div>
+          <div class="preview-card"><div class="preview-card-title">SQL Query Builder</div><div class="preview-card-text">Generate an optimized SQL query for the following requirements...</div><div class="preview-card-badge" style="background:rgba(90,200,250,0.15);color:#5AC8FA;">analysis</div></div>
+          <div class="preview-card"><div class="preview-card-title">Unit Test Generator</div><div class="preview-card-text">Write comprehensive unit tests for the following function...</div><div class="preview-card-badge" style="background:rgba(48,209,88,0.15);color:#30D158;">testing</div></div>
         </div>
       </div>
     </div>
@@ -498,103 +491,30 @@
 <!-- Features -->
 <section class="section" id="features">
   <div class="container">
-    <div class="section-label">Features</div>
-    <div class="section-title">Everything you need<br />to manage your AI library</div>
-    <div class="section-desc">A complete toolkit for AI power users — organized, searchable, and always at your fingertips.</div>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(0,122,255,0.15);">📝</div>
-        <div class="feature-title">Prompts Library</div>
-        <div class="feature-desc">Store and organize AI prompt templates with categories, models, temperature settings, token counting, and a Markdown editor with live preview.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(255,159,10,0.15);">⚡</div>
-        <div class="feature-title">Skills</div>
-        <div class="feature-desc">Define reusable AI behaviors with trigger phrases. Toggle active/inactive without deleting. Perfect for recurring tasks.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(191,90,242,0.15);">🧭</div>
-        <div class="feature-title">Steering</div>
-        <div class="feature-desc">Manage behavioral guidance and system instructions with scope (global/project/session) and priority ordering.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(48,209,88,0.15);">🔌</div>
-        <div class="feature-title">MCP Configs</div>
-        <div class="feature-desc">Store Model Context Protocol server configurations with syntax-highlighted JSON viewer. Paste directly from Claude or Cursor's mcp.json.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(90,200,250,0.15);">💻</div>
-        <div class="feature-title">Commands</div>
-        <div class="feature-desc">Shell command library for bash, zsh, fish, PowerShell, and more. Filter by platform (macOS/Linux/Windows) and copy with one click.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(0,212,255,0.15);">📊</div>
-        <div class="feature-title">Dashboard</div>
-        <div class="feature-desc">Analytics overview with activity heatmap (GitHub-style), usage charts, model distribution, and a favorites quick-access library.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(255,214,10,0.15);">🗂️</div>
-        <div class="feature-title">Detail View</div>
-        <div class="feature-desc">Click any item to open a full read-only view with rendered Markdown or syntax-highlighted JSON. Maximizable to full screen.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(255,55,95,0.15);">🗑️</div>
-        <div class="feature-title">Trash & Recovery</div>
-        <div class="feature-desc">Soft delete with 5-day auto-purge. Restore accidentally deleted items with one click. Counters always accurate.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(255,159,10,0.15);">☁️</div>
-        <div class="feature-title">S3 Backup & Sync</div>
-        <div class="feature-desc">Compatible with AWS S3, Cloudflare R2, Backblaze B2, and MinIO. Auto-sync scheduling from 15 minutes to 2 days.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(94,92,230,0.15);">🏷️</div>
-        <div class="feature-title">Tags & Categories</div>
-        <div class="feature-desc">Custom tags and categories with full color picker. Build your own organization system across all library sections.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(0,212,255,0.15);">🎨</div>
-        <div class="feature-title">Liquid Glass UI</div>
-        <div class="feature-desc">Apple iOS 18-inspired glassmorphism design with animated gradient backgrounds, spring animations, and a fully responsive layout.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(48,209,88,0.15);">📱</div>
-        <div class="feature-title">Fully Responsive</div>
-        <div class="feature-desc">Optimized for every screen — desktop, tablet, and mobile. No horizontal scrolling, collapsible sidebar, touch-friendly controls.</div>
-      </div>
+    <div class="reveal">
+      <div class="section-label">Features</div>
+      <div class="section-title">Everything you need<br />to manage your AI library</div>
+      <div class="section-desc">A complete toolkit for AI power users — organized, searchable, and always at your fingertips.</div>
     </div>
-
-    <!-- Highlights strip -->
-    <div class="highlights">
-      <div class="highlight-item">
-        <div class="highlight-icon" style="background:rgba(0,122,255,0.12);">⬆️</div>
-        <div>
-          <div class="highlight-title">Maximize any modal</div>
-          <div class="highlight-desc">Expand detail views and edit forms to full screen for long content.</div>
-        </div>
-      </div>
-      <div class="highlight-item">
-        <div class="highlight-icon" style="background:rgba(191,90,242,0.12);">✏️</div>
-        <div>
-          <div class="highlight-title">Markdown editor</div>
-          <div class="highlight-desc">Edit / Split / Preview modes with live rendering and syntax colors.</div>
-        </div>
-      </div>
-      <div class="highlight-item">
-        <div class="highlight-icon" style="background:rgba(48,209,88,0.12);">🔄</div>
-        <div>
-          <div class="highlight-title">Auto-sync to S3</div>
-          <div class="highlight-desc">Configurable intervals: 15m · 30m · 1h · 2h · 3h · 6h · 9h · 12h · 1d · 2d</div>
-        </div>
-      </div>
-      <div class="highlight-item">
-        <div class="highlight-icon" style="background:rgba(255,159,10,0.12);">📦</div>
-        <div>
-          <div class="highlight-title">Full backup coverage</div>
-          <div class="highlight-desc">Prompts, Skills, Steering, MCP, Commands, Tags and Categories — all backed up.</div>
-        </div>
-      </div>
+    <div class="features-grid stagger" style="margin-top:48px;">
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(0,122,255,0.15);">📝</div><div class="feature-title">Prompts Library</div><div class="feature-desc">Store and organize AI prompt templates with categories, models, temperature settings, token counting, and a Markdown editor with live preview.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(255,159,10,0.15);">⚡</div><div class="feature-title">Skills</div><div class="feature-desc">Define reusable AI behaviors with trigger phrases. Toggle active/inactive without deleting. Perfect for recurring tasks.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(191,90,242,0.15);">🧭</div><div class="feature-title">Steering</div><div class="feature-desc">Manage behavioral guidance and system instructions with scope (global/project/session) and priority ordering.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(48,209,88,0.15);">🔌</div><div class="feature-title">MCP Configs</div><div class="feature-desc">Store Model Context Protocol server configurations with syntax-highlighted JSON viewer. Paste directly from Claude or Cursor's mcp.json.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(90,200,250,0.15);">💻</div><div class="feature-title">Commands</div><div class="feature-desc">Shell command library for bash, zsh, fish, PowerShell, and more. Filter by platform (macOS/Linux/Windows) and copy with one click.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(0,212,255,0.15);">📊</div><div class="feature-title">Dashboard</div><div class="feature-desc">Analytics overview with activity heatmap (GitHub-style), usage charts, model distribution, and a favorites quick-access library.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(255,214,10,0.15);">🗂️</div><div class="feature-title">Detail View</div><div class="feature-desc">Click any item to open a full read-only view with rendered Markdown or syntax-highlighted JSON. Maximizable to full screen.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(255,55,95,0.15);">🗑️</div><div class="feature-title">Trash & Recovery</div><div class="feature-desc">Soft delete with 5-day auto-purge. Restore accidentally deleted items with one click. Counters always accurate.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(255,159,10,0.15);">☁️</div><div class="feature-title">S3 Backup & Sync</div><div class="feature-desc">Compatible with AWS S3, Cloudflare R2, Backblaze B2, and MinIO. Auto-sync scheduling from 15 minutes to 2 days.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(94,92,230,0.15);">🏷️</div><div class="feature-title">Tags & Categories</div><div class="feature-desc">Custom tags and categories with full color picker. Build your own organization system across all library sections.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(0,212,255,0.15);">🎨</div><div class="feature-title">Liquid Glass UI</div><div class="feature-desc">Apple iOS 18-inspired glassmorphism design with animated gradient backgrounds, spring animations, and a fully responsive layout.</div></div>
+      <div class="feature-card"><div class="feature-icon" style="background:rgba(48,209,88,0.15);">📱</div><div class="feature-title">Fully Responsive</div><div class="feature-desc">Optimized for every screen — desktop, tablet, and mobile. No horizontal scrolling, collapsible sidebar, touch-friendly controls.</div></div>
+    </div>
+    <div class="highlights stagger" style="margin-top:60px;">
+      <div class="highlight-item"><div class="highlight-icon" style="background:rgba(0,122,255,0.12);">⬆️</div><div><div class="highlight-title">Maximize any modal</div><div class="highlight-desc">Expand detail views and edit forms to full screen for long content.</div></div></div>
+      <div class="highlight-item"><div class="highlight-icon" style="background:rgba(191,90,242,0.12);">✏️</div><div><div class="highlight-title">Markdown editor</div><div class="highlight-desc">Edit / Split / Preview modes with live rendering and syntax colors.</div></div></div>
+      <div class="highlight-item"><div class="highlight-icon" style="background:rgba(48,209,88,0.12);">🔄</div><div><div class="highlight-title">Auto-sync to S3</div><div class="highlight-desc">15m · 30m · 1h · 2h · 3h · 6h · 9h · 12h · 1d · 2d</div></div></div>
+      <div class="highlight-item"><div class="highlight-icon" style="background:rgba(255,159,10,0.12);">📦</div><div><div class="highlight-title">Full backup coverage</div><div class="highlight-desc">Prompts, Skills, Steering, MCP, Commands, Tags, Categories — all backed up.</div></div></div>
     </div>
   </div>
 </section>
@@ -602,118 +522,46 @@
 <!-- Backup & Restore -->
 <section class="section" id="backup" style="padding-top:0;">
   <div class="container">
-    <div style="background:linear-gradient(135deg,rgba(255,159,10,0.07) 0%,rgba(48,209,88,0.05) 100%);border:1px solid rgba(255,159,10,0.15);border-radius:28px;padding:48px;position:relative;overflow:hidden;">
-
-      <!-- glow -->
+    <div style="background:linear-gradient(135deg,rgba(255,159,10,0.07) 0%,rgba(48,209,88,0.05) 100%);border:1px solid rgba(255,159,10,0.15);border-radius:28px;padding:48px;position:relative;overflow:hidden;" class="reveal">
       <div style="position:absolute;top:-60px;right:-60px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,159,10,0.12) 0%,transparent 70%);pointer-events:none;"></div>
-
       <div class="backup-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
-
-        <!-- Left: copy -->
         <div>
           <div class="section-label" style="color:var(--orange);">Backup & Restore</div>
           <div class="section-title" style="font-size:clamp(24px,3.5vw,36px);">Your library,<br/>always safe</div>
-          <div style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;margin-top:12px;margin-bottom:28px;">
-            Connect once to any S3-compatible storage. Promptly automatically backs up every item in your library on your schedule — and restoring is just one click.
-          </div>
-
+          <div style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;margin-top:12px;margin-bottom:28px;">Connect once to any S3-compatible storage. Promptly automatically backs up every item in your library on your schedule — and restoring is just one click.</div>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            <div style="display:flex;align-items:flex-start;gap:12px;">
-              <div style="width:28px;height:28px;border-radius:8px;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">☁️</div>
-              <div>
-                <div style="font-size:13px;font-weight:600;margin-bottom:2px;">AWS S3 · Cloudflare R2 · Backblaze B2 · MinIO</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.4);">Any S3-compatible provider works out of the box.</div>
-              </div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:12px;">
-              <div style="width:28px;height:28px;border-radius:8px;background:rgba(48,209,88,0.12);border:1px solid rgba(48,209,88,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">🔄</div>
-              <div>
-                <div style="font-size:13px;font-weight:600;margin-bottom:2px;">Auto-sync on a schedule</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.4);">15m · 30m · 1h · 2h · 3h · 6h · 9h · 12h · 1d · 2d — toggle and it starts immediately, no restart needed.</div>
-              </div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:12px;">
-              <div style="width:28px;height:28px;border-radius:8px;background:rgba(0,122,255,0.12);border:1px solid rgba(0,122,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">🗂️</div>
-              <div>
-                <div style="font-size:13px;font-weight:600;margin-bottom:2px;">Browse &amp; restore any snapshot</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.4);">List all backups in your bucket, preview the date and size, and restore with one click — merge or replace.</div>
-              </div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:12px;">
-              <div style="width:28px;height:28px;border-radius:8px;background:rgba(191,90,242,0.12);border:1px solid rgba(191,90,242,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">📦</div>
-              <div>
-                <div style="font-size:13px;font-weight:600;margin-bottom:2px;">Everything included</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.4);">Prompts, Skills, Steering, MCP Configs, Commands, Tags, Categories — nothing left behind.</div>
-              </div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:12px;">
-              <div style="width:28px;height:28px;border-radius:8px;background:rgba(90,200,250,0.12);border:1px solid rgba(90,200,250,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">📤</div>
-              <div>
-                <div style="font-size:13px;font-weight:600;margin-bottom:2px;">JSON export &amp; import</div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.4);">Download a full JSON snapshot anytime, or import from a file to migrate between instances.</div>
-              </div>
-            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">☁️</div><div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">AWS S3 · Cloudflare R2 · Backblaze B2 · MinIO</div><div style="font-size:12px;color:rgba(255,255,255,0.4);">Any S3-compatible provider works out of the box.</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:12px;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(48,209,88,0.12);border:1px solid rgba(48,209,88,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">🔄</div><div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Auto-sync on a schedule</div><div style="font-size:12px;color:rgba(255,255,255,0.4);">15m · 30m · 1h · 2h · 3h · 6h · 9h · 12h · 1d · 2d — toggle and it starts immediately.</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:12px;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(0,122,255,0.12);border:1px solid rgba(0,122,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">🗂️</div><div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Browse &amp; restore any snapshot</div><div style="font-size:12px;color:rgba(255,255,255,0.4);">List all backups in your bucket and restore with one click — merge or replace.</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:12px;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(191,90,242,0.12);border:1px solid rgba(191,90,242,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">📦</div><div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">Everything included</div><div style="font-size:12px;color:rgba(255,255,255,0.4);">Prompts, Skills, Steering, MCP, Commands, Tags, Categories — nothing left behind.</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:12px;"><div style="width:28px;height:28px;border-radius:8px;background:rgba(90,200,250,0.12);border:1px solid rgba(90,200,250,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">📤</div><div><div style="font-size:13px;font-weight:600;margin-bottom:2px;">JSON export &amp; import</div><div style="font-size:12px;color:rgba(255,255,255,0.4);">Download a full snapshot anytime, or import to migrate between instances.</div></div></div>
           </div>
         </div>
-
-        <!-- Right: mock UI -->
         <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:20px;font-size:12px;">
-          <!-- status bar -->
-          <div style="background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.25);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
-            <div style="width:7px;height:7px;border-radius:50%;background:#30D158;flex-shrink:0;"></div>
-            <span style="color:#30D158;font-weight:600;">Connected · s3://my-bucket</span>
-          </div>
-          <!-- provider chips -->
+          <div style="background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.25);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;"><div style="width:7px;height:7px;border-radius:50%;background:#30D158;flex-shrink:0;"></div><span style="color:#30D158;font-weight:600;">Connected · s3://my-bucket</span></div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
             <span style="background:rgba(0,122,255,0.18);border:1px solid rgba(0,122,255,0.35);color:#409CFF;border-radius:20px;padding:3px 11px;font-size:11px;font-weight:600;">AWS S3</span>
             <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);border-radius:20px;padding:3px 11px;font-size:11px;">Cloudflare R2</span>
             <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);border-radius:20px;padding:3px 11px;font-size:11px;">Backblaze B2</span>
             <span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);border-radius:20px;padding:3px 11px;font-size:11px;">MinIO</span>
           </div>
-          <!-- action buttons -->
           <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
             <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 12px;font-size:11px;color:rgba(255,255,255,0.6);">✓ Test Connection</div>
             <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 12px;font-size:11px;color:rgba(255,255,255,0.6);">💾 Save Config</div>
             <div style="background:rgba(0,122,255,0.85);border-radius:8px;padding:7px 12px;font-size:11px;color:white;font-weight:600;">⬆ Backup Now</div>
             <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:7px 12px;font-size:11px;color:rgba(255,255,255,0.6);">☁ Browse</div>
           </div>
-          <!-- backup list -->
           <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Recent backups</div>
           <div style="display:flex;flex-direction:column;gap:6px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;">
-              <div>
-                <div style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.8);">backup-2026-03-19T14-30.json</div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">Today · 142 KB</div>
-              </div>
-              <div style="font-size:10px;background:rgba(0,122,255,0.15);color:#409CFF;border:1px solid rgba(0,122,255,0.25);border-radius:6px;padding:3px 8px;cursor:pointer;">Restore</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;">
-              <div>
-                <div style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.8);">backup-2026-03-18T08-00.json</div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">Yesterday · 138 KB</div>
-              </div>
-              <div style="font-size:10px;background:rgba(0,122,255,0.15);color:#409CFF;border:1px solid rgba(0,122,255,0.25);border-radius:6px;padding:3px 8px;cursor:pointer;">Restore</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;">
-              <div>
-                <div style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.8);">latest.json</div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">Always up to date · 142 KB</div>
-              </div>
-              <div style="font-size:10px;background:rgba(0,122,255,0.15);color:#409CFF;border:1px solid rgba(0,122,255,0.25);border-radius:6px;padding:3px 8px;cursor:pointer;">Restore</div>
-            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;"><div><div style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.8);">backup-2026-03-19T14-30.json</div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">Today · 142 KB</div></div><div style="font-size:10px;background:rgba(0,122,255,0.15);color:#409CFF;border:1px solid rgba(0,122,255,0.25);border-radius:6px;padding:3px 8px;">Restore</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;"><div><div style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.8);">backup-2026-03-18T08-00.json</div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">Yesterday · 138 KB</div></div><div style="font-size:10px;background:rgba(0,122,255,0.15);color:#409CFF;border:1px solid rgba(0,122,255,0.25);border-radius:6px;padding:3px 8px;">Restore</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;"><div><div style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.8);">latest.json</div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">Always up to date · 142 KB</div></div><div style="font-size:10px;background:rgba(0,122,255,0.15);color:#409CFF;border:1px solid rgba(0,122,255,0.25);border-radius:6px;padding:3px 8px;">Restore</div></div>
           </div>
-          <!-- auto-sync -->
           <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;">
-            <div>
-              <div style="font-size:12px;font-weight:500;">Auto-sync to S3</div>
-              <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px;">Every 6h · Next run in ~3h</div>
-            </div>
-            <div style="width:36px;height:20px;border-radius:10px;background:#30D158;display:flex;align-items:center;padding:0 3px;justify-content:flex-end;">
-              <div style="width:14px;height:14px;border-radius:50%;background:white;"></div>
-            </div>
+            <div><div style="font-size:12px;font-weight:500;">Auto-sync to S3</div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px;">Every 6h · Next run in ~3h</div></div>
+            <div style="width:36px;height:20px;border-radius:10px;background:#30D158;display:flex;align-items:center;padding:0 3px;justify-content:flex-end;"><div style="width:14px;height:14px;border-radius:50%;background:white;"></div></div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -722,79 +570,104 @@
 <!-- Docker -->
 <section class="section" id="docker">
   <div class="container">
-    <div class="section-label">Docker</div>
-    <div class="section-title">Deploy in 30 seconds</div>
-    <div class="section-desc">No local dependencies. Just Docker. All three options are fully supported — pick the one that fits your setup.</div>
+    <div class="reveal">
+      <div class="section-label">Docker</div>
+      <div class="section-title">Up and running<br/>in 30 seconds</div>
+      <div class="section-desc">No local setup. No dependencies. Just Docker — pick the option that fits your stack.</div>
+    </div>
 
-    <!-- Option A: Docker Compose -->
-    <div class="docker-section" style="margin-top:40px;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
-        <span style="background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);color:var(--cyan);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px;flex-shrink:0;">OPTION A</span>
-        <span style="font-size:16px;font-weight:700;">Docker Compose</span>
-        <span style="font-size:12px;color:rgba(255,255,255,0.35);font-style:italic;">— recommended</span>
+    <!-- Big deploy hero with steps + terminal -->
+    <div class="deploy-hero reveal">
+      <div class="deploy-steps stagger">
+
+        <div class="deploy-step">
+          <div class="deploy-step-number" style="background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,122,255,0.1));border:1px solid rgba(0,212,255,0.3);color:var(--cyan);">1</div>
+          <div class="deploy-step-title">Clone</div>
+          <div class="deploy-step-desc">Pull the repo to your server or local machine</div>
+          <div style="margin-top:12px;background:rgba(0,0,0,0.4);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11.5px;color:var(--cyan);">git clone github.com/<br/>YonierGomez/promptly</div>
+        </div>
+
+        <div class="deploy-step">
+          <div class="deploy-step-number" style="background:linear-gradient(135deg,rgba(48,209,88,0.2),rgba(0,212,255,0.1));border:1px solid rgba(48,209,88,0.3);color:var(--green);">2</div>
+          <div class="deploy-step-title">Start</div>
+          <div class="deploy-step-desc">One command brings up the app + PostgreSQL</div>
+          <div style="margin-top:12px;background:rgba(0,0,0,0.4);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11.5px;color:var(--green);">docker compose up -d</div>
+        </div>
+
+        <div class="deploy-step">
+          <div class="deploy-step-number" style="background:linear-gradient(135deg,rgba(191,90,242,0.2),rgba(0,122,255,0.1));border:1px solid rgba(191,90,242,0.3);color:var(--purple);">3</div>
+          <div class="deploy-step-title">Open</div>
+          <div class="deploy-step-desc">Your library is live — no config needed</div>
+          <div style="margin-top:12px;background:rgba(0,0,0,0.4);border-radius:10px;padding:10px 14px;font-family:var(--mono);font-size:11.5px;color:#FF9F0A;">localhost:9090 ✦</div>
+        </div>
+
       </div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:16px;">Includes PostgreSQL, persistent volumes, and auto-restart. Clone the repo and run one command.</div>
 
-      <div class="code-block">
-        <span class="comment"># Clone the repo</span><br/>
-        <span class="cmd">git clone</span> <span class="arg">https://github.com/YonierGomez/promptly.git</span><br/>
-        <span class="cmd">cd</span> promptly<br/><br/>
-        <span class="comment"># Start all services (app + PostgreSQL)</span><br/>
-        <span class="cmd">docker compose up -d</span><br/><br/>
-        <span class="comment"># Open → http://localhost:9090</span>
-      </div>
-
-      <div style="margin-top:20px;">
-        <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">compose.yaml</div>
-        <div class="code-block" style="font-size:12px;line-height:1.75;">
-<span style="color:rgba(255,255,255,0.35);">services:</span><br/>
-<br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;app:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;build: .</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;container_name: promptly</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;ports:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- </span><span class="arg">"9090:3001"</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;environment:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NODE_ENV: production</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_HOST: postgres-db</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_NAME: promptly</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_USER: promptly</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_PASSWORD: secret</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_TYPE: postgres</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;volumes:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- </span><span class="arg">promptly_data:/data</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;restart: unless-stopped</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;depends_on:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;postgres-db: </span><span class="arg">{ condition: service_healthy }</span><br/>
-<br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;postgres-db:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;image: </span><span class="arg">postgres:alpine</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;container_name: promptly_postgres</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;restart: unless-stopped</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;environment:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POSTGRES_DB: </span><span class="arg">promptly</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POSTGRES_USER: </span><span class="arg">promptly</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POSTGRES_PASSWORD: </span><span class="arg">secret</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;volumes:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- </span><span class="arg">postgres_data:/var/lib/postgresql/data</span><br/>
-<br/>
-<span style="color:rgba(255,255,255,0.35);">volumes:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;promptly_data:</span><br/>
-<span style="color:rgba(255,255,255,0.35);">&nbsp;&nbsp;postgres_data:</span>
+      <!-- Terminal -->
+      <div class="deploy-terminal reveal-blur">
+        <div class="terminal-bar">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <div class="terminal-title">zsh — promptly</div>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-prompt">~</span><span class="t-prompt">$</span><span class="t-cmd">git clone</span><span class="t-arg">https://github.com/YonierGomez/promptly.git</span></div>
+          <div class="t-line" style="color:rgba(255,255,255,0.3);">Cloning into 'promptly'...</div>
+          <div class="t-line" style="color:rgba(255,255,255,0.3);">remote: Enumerating objects: 312, done.</div>
+          <div class="t-line"><span class="t-prompt">~</span><span class="t-prompt">$</span><span class="t-cmd">cd</span><span>promptly</span></div>
+          <div class="t-line"><span class="t-prompt">promptly</span><span class="t-prompt">$</span><span class="t-cmd">docker compose up -d</span></div>
+          <div class="t-line" style="color:rgba(255,255,255,0.3);"> ✔ Network promptly_default    Created</div>
+          <div class="t-line" style="color:rgba(255,255,255,0.3);"> ✔ Container promptly_postgres  Started</div>
+          <div class="t-line" style="color:rgba(255,255,255,0.3);"> ✔ Container promptly           Started</div>
+          <div class="t-line"><span class="t-prompt">promptly</span><span class="t-prompt">$</span><span class="t-cmd">open</span><span class="t-url">http://localhost:9090</span></div>
+          <div class="t-line"><span class="t-success">✦ Promptly is running</span></div>
         </div>
       </div>
     </div>
 
-    <!-- Option B + C side by side -->
+    <!-- Three options -->
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:20px;">
 
-      <!-- Option B: Docker Run SQLite -->
-      <div class="docker-section">
+      <!-- Option A -->
+      <div class="docker-section reveal" style="margin:0;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
-          <span style="background:rgba(48,209,88,0.12);border:1px solid rgba(48,209,88,0.3);color:var(--green);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px;flex-shrink:0;">OPTION B</span>
+          <span class="option-pill" style="background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);color:var(--cyan);">OPTION A</span>
+          <span style="font-size:15px;font-weight:700;">Docker Compose</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.35);font-style:italic;">recommended</span>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">App + PostgreSQL + persistent volumes + auto-restart.</div>
+        <div class="code-block" style="font-size:12px;">
+          <span class="cmd">git clone</span> <span class="arg">github.com/YonierGomez/promptly</span><br/>
+          <span class="cmd">cd</span> promptly<br/>
+          <span class="cmd">docker compose up -d</span><br/><br/>
+          <span class="comment"># Open → http://localhost:9090</span>
+        </div>
+        <div style="margin-top:16px;">
+          <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.3);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">compose.yaml</div>
+          <div class="code-block" style="font-size:11px;line-height:1.7;">
+<span style="color:rgba(255,255,255,0.3);">services:</span><br/>
+<span style="color:rgba(255,255,255,0.3);">&nbsp;&nbsp;app:</span><br/>
+<span style="color:rgba(255,255,255,0.3);">&nbsp;&nbsp;&nbsp;&nbsp;build: .</span><br/>
+<span style="color:rgba(255,255,255,0.3);">&nbsp;&nbsp;&nbsp;&nbsp;ports: [</span><span class="arg">"9090:3001"</span><span style="color:rgba(255,255,255,0.3);">]</span><br/>
+<span style="color:rgba(255,255,255,0.3);">&nbsp;&nbsp;&nbsp;&nbsp;environment:</span><br/>
+<span style="color:rgba(255,255,255,0.3);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_HOST: </span><span class="arg">postgres-db</span><br/>
+<span style="color:rgba(255,255,255,0.3);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB_TYPE: </span><span class="arg">postgres</span><br/>
+<span style="color:rgba(255,255,255,0.3);">&nbsp;&nbsp;&nbsp;&nbsp;restart: unless-stopped</span><br/>
+<span style="color:rgba(255,255,255,0.3);"><br/>&nbsp;&nbsp;postgres-db:</span><br/>
+<span style="color:rgba(255,255,255,0.3);">&nbsp;&nbsp;&nbsp;&nbsp;image: </span><span class="arg">postgres:alpine</span><br/>
+<span style="color:rgba(255,255,255,0.3);">&nbsp;&nbsp;&nbsp;&nbsp;restart: unless-stopped</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option B -->
+      <div class="docker-section reveal" style="margin:0;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+          <span class="option-pill" style="background:rgba(48,209,88,0.12);border:1px solid rgba(48,209,88,0.3);color:var(--green);">OPTION B</span>
           <span style="font-size:15px;font-weight:700;">docker run — SQLite</span>
         </div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Single container, zero extra services. Data lives in a named volume.</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Single container. Zero extra services. Data in a named volume.</div>
         <div class="code-block" style="font-size:12px;">
           <span class="cmd">docker run</span> -d \<br/>
           &nbsp;&nbsp;--name promptly \<br/>
@@ -806,13 +679,13 @@
         </div>
       </div>
 
-      <!-- Option C: Docker Run PostgreSQL -->
-      <div class="docker-section">
+      <!-- Option C -->
+      <div class="docker-section reveal" style="margin:0;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
-          <span style="background:rgba(94,92,230,0.12);border:1px solid rgba(94,92,230,0.3);color:#9B8FF5;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px;flex-shrink:0;">OPTION C</span>
+          <span class="option-pill" style="background:rgba(94,92,230,0.12);border:1px solid rgba(94,92,230,0.3);color:#9B8FF5;">OPTION C</span>
           <span style="font-size:15px;font-weight:700;">docker run — PostgreSQL</span>
         </div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Point to your own PostgreSQL instance via a connection string.</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">Point to your own PostgreSQL via a connection string.</div>
         <div class="code-block" style="font-size:12px;">
           <span class="cmd">docker run</span> -d \<br/>
           &nbsp;&nbsp;--name promptly \<br/>
@@ -827,23 +700,23 @@
 
     </div>
 
-    <!-- Quick reference -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:20px;">
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+    <!-- Quick ref -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:20px;" class="stagger">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;transition:all 0.2s var(--spring);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
         <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Custom Port</div>
         <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">PORT=8080 docker compose up -d</div>
       </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;transition:all 0.2s var(--spring);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
         <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">View Logs</div>
         <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker compose logs -f</div>
       </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;transition:all 0.2s var(--spring);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
         <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Update</div>
         <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker compose up -d --build</div>
       </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px;transition:all 0.2s var(--spring);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
         <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Backup DB</div>
-        <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker exec promptly_postgres<br/>pg_dump -U promptly promptly > backup.sql</div>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--cyan);">docker exec promptly_postgres pg_dump -U promptly promptly > backup.sql</div>
       </div>
     </div>
   </div>
@@ -851,7 +724,7 @@
 
 <!-- Sponsor -->
 <section class="sponsor-section">
-  <div class="container">
+  <div class="container reveal">
     <div class="sponsor-title">❤️ Support Promptly</div>
     <div class="sponsor-desc">If Promptly saves you time and makes your AI workflow better,<br/>consider supporting its development.</div>
     <div class="sponsor-buttons">
@@ -859,23 +732,35 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         Sponsor on GitHub
       </a>
-      <a href="https://buymeacoffee.com/yoniergomez" class="sponsor-btn sponsor-coffee" target="_blank">
-        ☕ Buy Me a Coffee
-      </a>
+      <a href="https://buymeacoffee.com/yoniergomez" class="sponsor-btn sponsor-coffee" target="_blank">☕ Buy Me a Coffee</a>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
 <footer>
   <div class="container">
-    <p>
-      Made with ❤️ by <a href="https://github.com/YonierGomez" target="_blank">Yonier Gomez</a> ·
-      <a href="https://github.com/YonierGomez/promptly" target="_blank">GitHub</a> ·
-      MIT License
-    </p>
+    <p>Made with ❤️ by <a href="https://github.com/YonierGomez" target="_blank">Yonier Gomez</a> · <a href="https://github.com/YonierGomez/promptly" target="_blank">GitHub</a> · MIT License</p>
   </div>
 </footer>
+
+<script>
+  // Scroll-triggered animations
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-blur, .scale-in, .stagger').forEach(el => io.observe(el));
+
+  // Nav scroll tint
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
 
 </body>
 </html>
