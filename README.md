@@ -52,51 +52,43 @@ If Promptly saves you time, consider supporting its development:
 
 ---
 
-## 🚀 Quick Start
+## 🐳 Deploy with Docker
 
-### Option 1: Docker (Recommended)
+Docker is the recommended way to run Promptly. No local dependencies needed — just Docker.
+
+### Option A: Docker Compose (recommended)
+
+Includes PostgreSQL, persistent volumes, and automatic restarts.
 
 ```bash
-# Clone the repository
 git clone https://github.com/YonierGomez/promptly.git
 cd promptly
-
-# Start with Docker Compose
-docker compose up -d
-
-# Open in browser
-open http://localhost:3001
-```
-
-### Option 2: Development
-
-```bash
-# Install all dependencies
-npm run install:all
-
-# Start both backend and frontend
-npm run dev
-```
-
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:3001
-
----
-
-## 🐳 Docker Deployment
-
-### Basic deployment
-
-```bash
 docker compose up -d
 ```
 
-App will be available at **http://localhost:3001**
+Open **http://localhost:3001** and you're done.
+
+### Option B: Docker run (single container)
+
+Runs with a built-in SQLite database — no extra services required.
+
+```bash
+docker run -d \
+  --name promptly \
+  -p 3001:3001 \
+  -v promptly_data:/data \
+  --restart unless-stopped \
+  ghcr.io/yoniergomez/promptly:latest
+```
 
 ### Custom port
 
 ```bash
+# Docker Compose
 PORT=8080 docker compose up -d
+
+# Docker run
+docker run -d --name promptly -p 8080:3001 -v promptly_data:/data ghcr.io/yoniergomez/promptly:latest
 ```
 
 ### Environment variables
@@ -105,28 +97,42 @@ PORT=8080 docker compose up -d
 |----------|---------|-------------|
 | `PORT` | `3001` | Server port |
 | `NODE_ENV` | `production` | Environment |
-| `DATABASE_URL` | — | PostgreSQL connection string |
-| `DB_PATH` | `/data/prompts.db` | SQLite path (if not using PostgreSQL) |
+| `DATABASE_URL` | — | PostgreSQL connection string (Compose sets this automatically) |
+| `DB_PATH` | `/data/prompts.db` | SQLite path (used when `DATABASE_URL` is not set) |
 | `FRONTEND_URL` | `http://localhost:3000` | Frontend URL (CORS) |
 
-### Docker commands
+### Useful commands
 
 ```bash
-# Start
-docker compose up -d
+# View logs
+docker compose logs -f
 
 # Stop
 docker compose down
 
-# View logs
-docker compose logs -f
-
-# Rebuild after updates
+# Rebuild after updating the repo
 docker compose up -d --build
 
-# Backup database (PostgreSQL)
+# Backup PostgreSQL database
 docker exec promptly_postgres pg_dump -U promptly promptly > backup-$(date +%Y%m%d).sql
+
+# Backup SQLite database (docker run mode)
+docker cp promptly:/data/prompts.db ./backup-$(date +%Y%m%d).db
 ```
+
+---
+
+## 🛠️ Development
+
+Only needed if you want to modify the source code.
+
+```bash
+npm run install:all   # install all dependencies
+npm run dev           # start backend + frontend in watch mode
+```
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:3001
 
 ---
 
