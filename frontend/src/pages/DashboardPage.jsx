@@ -55,7 +55,8 @@ function buildActivityData(rawActivity, days = 30) {
   return Array.from({ length: days }, (_, i) => {
     const d = new Date()
     d.setDate(d.getDate() - (days - 1 - i))
-    const iso = d.toISOString().split('T')[0]
+    // Use local date (not UTC) so the key matches what the backend stores
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
     const label = `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`
     return { day: label, ...(map[iso] || { prompts: 0, skills: 0, steering: 0, mcp: 0, commands: 0 }) }
   })

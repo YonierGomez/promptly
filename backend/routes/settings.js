@@ -58,8 +58,12 @@ router.get('/stats', async (req, res) => {
     const [fcc] = await db('commands').whereNull('deleted_at').where('is_favorite', 1).count('id as count');
 
     // Activity last 30 days — computed in JS to avoid SQL dialect differences
-    const cutoff30 = new Date(Date.now() - 29 * 86400000).toISOString().split('T')[0];
-    const cutoff365 = new Date(Date.now() - 364 * 86400000).toISOString().split('T')[0];
+    // Use local date helpers to avoid UTC-offset mismatches
+    const localDateStr = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const d30 = new Date(Date.now() - 29 * 86400000);
+    const d365 = new Date(Date.now() - 364 * 86400000);
+    const cutoff30 = localDateStr(d30);
+    const cutoff365 = localDateStr(d365);
 
     const [pActivity, sActivity, stActivity, mActivity, cActivity] = await Promise.all([
       db('prompts').whereNull('deleted_at').select('created_at').where('created_at', '>=', cutoff30),
@@ -71,7 +75,7 @@ router.get('/stats', async (req, res) => {
 
     const actMap = {};
     const addToMap = (rows, type) => rows.forEach(r => {
-      const day = r.created_at.split('T')[0];
+      const day = localDateStr(new Date(r.created_at));
       if (!actMap[day]) actMap[day] = { day, prompts: 0, skills: 0, steering: 0, mcp: 0, commands: 0 };
       actMap[day][type]++;
     });
@@ -142,7 +146,7 @@ router.get('/stats', async (req, res) => {
     ]);
     const heatMap = {};
     [...pH, ...sH, ...stH, ...mH, ...cH].forEach(r => {
-      const day = r.created_at.split('T')[0];
+      const day = localDateStr(new Date(r.created_at));
       heatMap[day] = (heatMap[day] || 0) + 1;
     });
     const activity_heatmap = heatMap;
