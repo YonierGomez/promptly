@@ -5,7 +5,7 @@ import { aiApi, settingsApi } from '../utils/api'
 import {
   Send, MessageSquare, Zap, Navigation, TerminalSquare,
   Check, Settings, ExternalLink, RefreshCw, Bot, User,
-  Trash2, Bot, History,
+  Trash2, History,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 

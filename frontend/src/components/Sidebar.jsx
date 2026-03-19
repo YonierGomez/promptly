@@ -88,7 +88,7 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Logo */}
       <div className="sidebar-logo">
         <div className="sidebar-logo-icon" style={appLogo ? { background: 'none', padding: 0 } : {
-          background: 'linear-gradient(145deg, #0D1117 0%, #161B22 100%)',
+          background: 'linear-gradient(145deg, #0a0a0a 0%, #0f0f12 100%)',
           boxShadow: '0 4px 16px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07)',
           border: '1px solid rgba(255,255,255,0.09)',
         }}>

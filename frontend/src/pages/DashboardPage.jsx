@@ -572,7 +572,7 @@ export default function DashboardPage() {
       {/* Welcome */}
       <div style={{ marginBottom: 24 }} className="animate-fade-in-up">
         <div className="welcome-banner" style={{
-          background: 'linear-gradient(135deg, #1a1a24 0%, #08080c 100%)',
+          background: 'linear-gradient(135deg, #0f0f12 0%, #0a0a0a 100%)',
           border: '1px solid rgba(255,255,255,0.10)',
           borderRadius: 'var(--radius-2xl)',
           padding: '24px 28px',
@@ -581,7 +581,7 @@ export default function DashboardPage() {
           <div className="welcome-banner-line" style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)' }} />
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, minWidth: 0 }}>
-              <div className="welcome-banner-icon" style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(145deg, #0D1117 0%, #161B22 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.09)' }}>
+              <div className="welcome-banner-icon" style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(145deg, #0a0a0a 0%, #0f0f12 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.09)' }}>
               <svg width="24" height="24" viewBox="0 0 20 20" fill="none">
                 <rect x="2" y="2" width="16" height="16" rx="4" stroke="#00D4FF" strokeWidth="1.2" strokeOpacity="0.7"/>
                 <rect x="5.5" y="5.5" width="3.5" height="3.5" rx="1" fill="#00D4FF" fillOpacity="0.85"/>

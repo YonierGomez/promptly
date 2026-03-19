@@ -510,7 +510,7 @@ export default function SettingsPage() {
               {/* Preview */}
               <div style={{
                 width: 52, height: 52, borderRadius: 14, overflow: 'hidden', flexShrink: 0,
-                background: currentSettings.app_logo ? 'transparent' : 'linear-gradient(145deg, #0D1117 0%, #161B22 100%)',
+                background: currentSettings.app_logo ? 'transparent' : 'linear-gradient(145deg, #0a0a0a 0%, #0f0f12 100%)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
                 border: '1px solid rgba(255,255,255,0.09)',
@@ -1025,7 +1025,7 @@ export default function SettingsPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             <div style={{
               width: 48, height: 48, borderRadius: 14, overflow: 'hidden', flexShrink: 0,
-              background: currentSettings.app_logo ? 'none' : 'linear-gradient(145deg, #0D1117 0%, #161B22 100%)',
+              background: currentSettings.app_logo ? 'none' : 'linear-gradient(145deg, #0a0a0a 0%, #0f0f12 100%)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
               border: '1px solid rgba(255,255,255,0.09)',
