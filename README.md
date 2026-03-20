@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/YonierGomez/promptly/main/docs/logo.png" alt="Promptly Logo" width="80" height="80" />
+<img src="https://raw.githubusercontent.com/YonierGomez/promptly/main/docs/promptly.png" alt="Promptly — AI Prompts Manager" width="100%" style="max-width:900px;border-radius:12px;" />
 
 # ✦ Promptly
 
